@@ -9,3 +9,5 @@ Il est donc préférable d'utiliser uniquement express lorsqu'on a pas besoins d
 
 Question 4 : conf.tp2 permet de rendre privé l'ensemble des attributs et de pouvoir changer facilement un paramètre.
 Pour passer de développeur à production, on va juste modifier ce paramètre et ne pas modifier l'intégralité du code
+
+Question 5 : La fonction findOne permet de retrouver une personne dans la base de donnée
