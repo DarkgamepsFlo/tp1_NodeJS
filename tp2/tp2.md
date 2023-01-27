@@ -209,7 +209,7 @@ Cependant, je vous conseille d'utiliser le package [axios](https://www.npmjs.com
 
 ### Bonus
 
-Si vous avez terminé le TP en avance, vous pouvez implémenter vos prores fonctionnalités.
+Si vous avez terminé le TP en avance, vous pouvez implémenter vos propres fonctionnalités.
 Sinon, voici quelques pistes à explorer:
 - Mettre en place un système de log avec [morgan](https://www.npmjs.com/package/morgan)
 - Mettre en place des tests unitaires avec [jest](https://jestjs.io/fr/)

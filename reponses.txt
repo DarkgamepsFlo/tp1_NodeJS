@@ -1,1 +1,11 @@
-Ce fichier va contenir l'ensemble des questions
+Question 1 : Le fichier "package.json" permet de voir l'ensemble des informations sur le projet node ainsi que l'ensemble des extensions installées avec leur version.
+
+Question 2 : Le fichier "package-lock.json" contient les mêmes informations que le fichier précédant mais nous avons l'ensemble des modules en plus indiqué.
+
+Question 3 : Il est également possible d'intaller un package grâce à "npm install express --save-dev"
+
+Sauf que cette commande installe des modules qui sont utilises uniquement pour le Font
+Il est donc préférable d'utiliser uniquement express lorsqu'on a pas besoins de module supplémentaire, on prend moins de place
+
+Question 4 : conf.tp2 permet de rendre privé l'ensemble des attributs et de pouvoir changer facilement un paramètre.
+Pour passer de développeur à production, on va juste modifier ce paramètre et ne pas modifier l'intégralité du code

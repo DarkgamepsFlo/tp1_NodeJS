@@ -1,0 +1,6 @@
+{
+    "tp2" : {
+        "databaseUrl" : "mongodb://localhost:27017",
+        "databaseName" : "watchlist"
+    }
+}
