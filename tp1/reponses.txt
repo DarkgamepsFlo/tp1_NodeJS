@@ -1,0 +1,8 @@
+Question 1 : Le fichier "package.json" permet de voir l'ensemble des informations sur le projet node ainsi que l'ensemble des extensions installées avec leur version.
+
+Question 2 : Le fichier "package-lock.json" contient les mêmes informations que le fichier précédant mais nous avons l'ensemble des modules en plus indiqué.
+
+Question 3 : Il est également possible d'intaller un package grâce à "npm install express --save-dev"
+
+Sauf que cette commande n'installe qu'une partie des modules compris dans express
+Il est donc préférable d'utiliser uniquement express lorsqu'on a besoin de l'ensemble des modules pour ne pas être surpris s'il manque quelque chose.
