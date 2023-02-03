@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const users = require('./users');
+const movies = require('./movies');
 
 // const metrics = {
 //     requestsCount: {},
@@ -23,12 +24,18 @@ app.use(express.json());
 
 app.use('/users', users);
 
+app.use('/movies', movies);
+
 app.get('/', (req, res, next) => {
     return res.send('Hello World !');
 });
 
 app.get('/users', (req, res, next) => {
-    return res.send('Veuillez faire /users/[option]');
+    return res.send('Veuillez faire /users/[option]</br> create : Permet de créer un joueur');
+});
+
+app.get('/movies', (req, res, next) => {
+    return res.send("Veuillez faire /movies/[option]</br> insertMovie : Permet d'enregistrer un film dans le registre");
 });
 
 // app.get('/health', (req, res, next) => {

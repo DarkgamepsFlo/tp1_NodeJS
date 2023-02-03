@@ -1,4 +1,35 @@
-const { getCollection } = require('../../../src/services/db/connection');
+const { getCollection } = require('../../../src2/services/db/connection');
+const { searchMovies } = require('../../../src2/repositories/omdbapi')
+
+async function insertClient(collectionName, doc) {
+  try {
+    const collection = getCollection(collectionName);
+    // create a document to insert
+    const result = await collection.insertOne(doc);
+	console.log(`A document was inserted with the _id: ${result.insertedId}`);
+	return "Le client est bien enregistré dans la base de données";
+
+  } catch(e) {
+	console.log("Le client n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
+
+// insertMovies('movies', {title: The Second 100 Years, key: key});
+async function insertMovies(collectionName, doc) {
+  try {
+    // create a document to insert
+    searchMovies(collectionName, doc);
+    return "Le film est bien enregistré dans la base de données";
+	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
+
+  } catch(e) {
+	console.log("Le film n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
 
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
@@ -34,24 +65,6 @@ const { getCollection } = require('../../../src/services/db/connection');
 //     console.log(e);
 //     throw e;
 //     }
-// }
-
-// async function insertOne(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-//     // create a document to insert
-//     const doc = {
-//       name: "Ramm"
-//     }
-//     const result = await collection.insertOne(doc);
-// 	console.log(`A document was inserted with the _id: ${result.insertedId}`);
-// 	return result;
-
-//   } catch(e) {
-// 	console.log("Pas d'users inséré")
-// 	console.log(e);
-// 	throw e;
-//   }
 // }
 
 // async function insertMany(collectionName) {
@@ -190,5 +203,6 @@ const { getCollection } = require('../../../src/services/db/connection');
 // }
 
 module.exports = {
-
+    insertClient,
+    insertMovies
 };
