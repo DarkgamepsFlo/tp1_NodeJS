@@ -1,6 +1,7 @@
 const { getCollection } = require('../../../src2/services/db/connection');
 const { searchMovies } = require('../../../src2/repositories/omdbapi')
 
+// 1 ////////////////////////
 async function insertClient(collectionName, doc) {
   try {
     const collection = getCollection(collectionName);
@@ -16,6 +17,7 @@ async function insertClient(collectionName, doc) {
   }
 }
 
+// 2 ////////////////////////
 // insertMovies('movies', {title: The Second 100 Years, key: key});
 async function insertMovies(collectionName, doc) {
   try {
@@ -31,6 +33,7 @@ async function insertMovies(collectionName, doc) {
   }
 }
 
+// 3 ////////////////////////
 async function createWatchList(collectionName, filter) {
   try {
     const collection = getCollection(collectionName);
@@ -45,17 +48,48 @@ async function createWatchList(collectionName, filter) {
       },
     };
 
+    console.log(filter.name);
+
     const result = await collection.updateOne(filter, updateDoc, options);
+
+    const result2 = insertWatchlist("watchlist", filter.name);
+
+    console.log(result2);
+
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
     );
-	return result;
+	  return result;
   } catch(e) {
 	console.log("Pas d'users updaté")
 	console.log(e);
 	throw e;
   }
 }
+
+async function insertWatchlist(collectionName, pseudo) {
+  try {
+    const collection = getCollection(collectionName);
+
+    var element = {
+      id_utilisateur: pseudo,
+      film: []
+    }
+
+    // create a document to insert
+    const result = await collection.insertOne(element);
+
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return "La watchList est bien enregistré dans la base de données";
+
+  } catch(e) {
+	console.log("La watchList n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
+
+// 4 ////////////////////////
 
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
