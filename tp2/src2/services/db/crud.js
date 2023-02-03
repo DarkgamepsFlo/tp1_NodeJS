@@ -90,6 +90,63 @@ async function insertWatchlist(collectionName, pseudo) {
 }
 
 // 4 ////////////////////////
+async function insertItem(collectionName, filter, options = {}) {
+  try {
+    const collection = getCollection(collectionName);
+    const collection2 = getCollection('movies');
+    const collection3 = getCollection('users');
+
+    const options = { upsert: false };
+
+    const search = {
+      name: filter.watchlist.id_utilisateur
+    };
+
+    // Je récupère les infos du film et de l'utilsateur ayant la watchList 
+    const result3 = await collection.findOne(filter.watchlist, options);
+		const result = await collection2.findOne(filter.titre, options);
+    const result2 = await collection3.findOne(search, options);
+    
+
+    console.log(result3)
+		
+    // J'ajoute le film dans le watchlist client
+    const newList = result2.watchlist;
+    newList.push(filter.titre.Title);
+
+    // create a document that sets the plot of the movie
+    const updateDoc = {
+      $set: {
+        watchlist: newList
+      },
+    };
+
+    collection3.updateOne(search, updateDoc, options);
+
+    // J'ajoute les informations du film dans le watchList
+    const newitem = result3.film;
+    newitem.push([result.Title, result.Year, result.Type]);
+
+
+    // create a document that sets the plot of the movie
+    const updateItem = {
+      $set: {
+        film: newitem
+      },
+    };
+
+    const result4 = await collection.updateOne(filter.watchlist, updateItem, options);
+
+    return result4;
+
+	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
+
+  } catch(e) {
+	console.log("L'item n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
 
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
@@ -265,5 +322,6 @@ async function insertWatchlist(collectionName, pseudo) {
 module.exports = {
     insertClient,
     insertMovies,
-    createWatchList
+    createWatchList,
+    insertItem
 };
