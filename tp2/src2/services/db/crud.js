@@ -31,6 +31,32 @@ async function insertMovies(collectionName, doc) {
   }
 }
 
+async function createWatchList(collectionName, filter) {
+  try {
+    const collection = getCollection(collectionName);
+
+    // this option instructs the method to create a document if no documents match the filter
+    const options = { upsert: false };
+
+    // create a document that sets the plot of the movie
+    const updateDoc = {
+      $set: {
+        watchlist: []
+      },
+    };
+
+    const result = await collection.updateOne(filter, updateDoc, options);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
+    );
+	return result;
+  } catch(e) {
+	console.log("Pas d'users updaté")
+	console.log(e);
+	throw e;
+  }
+}
+
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
 // 		const collection = getCollection(collectionName);
@@ -204,5 +230,6 @@ async function insertMovies(collectionName, doc) {
 
 module.exports = {
     insertClient,
-    insertMovies
+    insertMovies,
+    createWatchList
 };

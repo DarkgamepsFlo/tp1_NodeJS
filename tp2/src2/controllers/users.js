@@ -1,4 +1,4 @@
-const { insertClient } = require("../services/db/crud");
+const { insertClient, createWatchList } = require("../services/db/crud");
 
 async function createUser(req, res, next) {
   const body = req.body;
@@ -9,6 +9,18 @@ async function createUser(req, res, next) {
     console.log(e);
   }
 }
+
+async function createWatchlist(req, res, next) {
+  const body = req.body;
+  try{
+    const result = await createWatchList('users', body);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
+}
+
+
 
 
 // Exemple ///////////////////////////////////////////////////////////
@@ -22,6 +34,7 @@ async function createUser(req, res, next) {
 // }
 
 module.exports = {
-  createUser
+  createUser,
+  createWatchlist
 };
 
