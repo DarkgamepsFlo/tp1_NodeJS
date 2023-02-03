@@ -1,13 +1,9 @@
-const { insertMovies } = require("../services/db/crud"); // insertOne
+const {  } = require("../services/db/crud"); // insertOne
 
-async function insertOneMovies(req, res, next) {
-  const body = req.body
-  try{
-    const result = await insertMovies('movies', body);
-    return res.send(result);
-  }catch(e){
-    console.log(e);
-  }
+
+function createMovies(req, res, next) {
+  console.log("Cration ...");
+  res.send("Movies créé");
 }
 
 // Exemple ///////////////////////////////////////////////////////////
@@ -21,5 +17,5 @@ async function insertOneMovies(req, res, next) {
 // }
 
 module.exports = {
-  insertOneMovies
+
 };

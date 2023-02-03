@@ -1,13 +1,25 @@
 var axios = require("axios").default;
+const { getCollection } = require('../services/db/connection');
 
-var options = {
-  method: 'GET',
-  url: 'http://www.omdbapi.com/',
-  params: {s: 'The 100', apikey: '43a891a3'}
+function searchMovies(collectionName, doc){
+  var options = {
+    method: 'GET',
+    url: 'http://www.omdbapi.com/',
+    params: doc
+  };
+  
+  axios.request(options).then(function (response) {
+    
+    console.log(response.data.Search);
+
+    const collection = getCollection(collectionName);
+    
+    const result = collection.insertOne(response.data.Search[0]);
+  }).catch(function (error) {
+    console.error(error);
+  });
+}
+
+module.exports = {
+  searchMovies
 };
-
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});

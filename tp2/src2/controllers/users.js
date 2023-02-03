@@ -1,10 +1,15 @@
-const {  } = require("../services/db/crud"); // insertOne
+const { insertClient } = require("../services/db/crud");
 
-
-function createUser(req, res, next) {
-  console.log("Cration ...");
-  res.send("User créé");
+async function createUser(req, res, next) {
+  const body = req.body;
+  try{
+    const result = await insertClient('users', body);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
 }
+
 
 // Exemple ///////////////////////////////////////////////////////////
 // async function findUser(req, res, next){
@@ -17,6 +22,6 @@ function createUser(req, res, next) {
 // }
 
 module.exports = {
-
+  createUser
 };
 

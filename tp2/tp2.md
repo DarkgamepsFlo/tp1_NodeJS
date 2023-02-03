@@ -177,8 +177,8 @@ Faites valider votre conception.
 Une fois cela fait, créer les collections mongodb associées à vos entités dans une base de données "watchlist" via compass.
 
 ###  Fonctionnalités minimales de la watchlist
- - Créer un utilisateur
- - Ajouter un item au registre
+ - Créer un utilisateur //
+ - Ajouter un item au registre //
  - Créer une watchlist pour un utilisateur
  - Ajouter un item dans une watchlist
  - Modifier le statut d'un item dans une watchlist 

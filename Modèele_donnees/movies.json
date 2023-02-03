@@ -1,0 +1,27 @@
+{
+	"title": "Movies",
+	"description": "Film qui va être ajouté à la Base de donnée",
+	"type": "object",
+	"properties": {
+		"id": {
+		    "type": "int"
+        },
+        "title": {
+            "type": "string"
+        },
+        "genre": {
+            "type": "string"
+        },
+        "time": {
+            "type": "string"
+        },
+        "annee": {
+            "type": "date"
+        },
+        "id_watchlist": {
+            "type": "int"
+        }
+	},
+	"required": ["id", "items"],
+	"additionalProperties": false
+}

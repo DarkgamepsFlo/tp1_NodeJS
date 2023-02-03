@@ -1,31 +1,15 @@
-const { getCollection } = require('../../../src2/services/db/connection');
-const { searchMovies } = require('../../../src2/repositories/omdbapi')
+const { getCollection } = require('../../../src/services/db/connection');
 
-async function insertClient(collectionName, doc) {
+async function insertOne(collectionName, doc) {
   try {
     const collection = getCollection(collectionName);
     // create a document to insert
     const result = await collection.insertOne(doc);
 	console.log(`A document was inserted with the _id: ${result.insertedId}`);
-	return "Le client est bien enregistré dans la base de données";
+	return "Vous êtes bien enregistré dans la base de données";
 
   } catch(e) {
-	console.log("Le client n'a pas pu être inséré")
-	console.log(e);
-	throw e;
-  }
-}
-
-// insertMovies('movies', {title: The Second 100 Years, key: key});
-async function insertMovies(collectionName, doc) {
-  try {
-    // create a document to insert
-    searchMovies(collectionName, doc);
-    return "Le film est bien enregistré dans la base de données";
-	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
-
-  } catch(e) {
-	console.log("Le film n'a pas pu être inséré")
+	console.log("L'utilisateur n'a pas pu être inséré")
 	console.log(e);
 	throw e;
   }
@@ -203,6 +187,5 @@ async function insertMovies(collectionName, doc) {
 // }
 
 module.exports = {
-    insertClient,
-    insertMovies
+    insertOne
 };
