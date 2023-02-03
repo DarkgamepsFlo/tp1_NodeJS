@@ -1,5 +1,5 @@
 const { getCollection } = require('../../../src2/services/db/connection');
-const { searchMovies } = require('../../../src2/repositories/omdbapi')
+const { searchMovies } = require('../../../src2/repositories/omdbapi');
 
 // 1 ////////////////////////
 async function insertClient(collectionName, doc) {
@@ -106,9 +106,6 @@ async function insertItem(collectionName, filter, options = {}) {
     const result3 = await collection.findOne(filter.watchlist, options);
 		const result = await collection2.findOne(filter.titre, options);
     const result2 = await collection3.findOne(search, options);
-    
-
-    console.log(result3)
 		
     // J'ajoute le film dans le watchlist client
     const newList = result2.watchlist;
@@ -125,7 +122,7 @@ async function insertItem(collectionName, filter, options = {}) {
 
     // J'ajoute les informations du film dans le watchList
     const newitem = result3.film;
-    newitem.push([result.Title, result.Year, result.Type]);
+    newitem.push([result.Title, result.Year, result.Type, "A voir"]);
 
 
     // create a document that sets the plot of the movie
@@ -147,6 +144,59 @@ async function insertItem(collectionName, filter, options = {}) {
 	throw e;
   }
 }
+
+// Récupérer la variable contenant les états d'un film
+// const result666 = await collection.findOne(filter.watchlist, options);
+// console.log(result666.film[identifiant_du_film][3]);
+  
+// 5 ////////////////////////
+// Le body contient le nom de la watchlist, le nom du film et le nom du status à attribuer
+async function updateStatus(collectionName, body) {
+  try {
+    const collection = getCollection(collectionName);
+
+    // this option instructs the method to create a document if no documents match the filter
+    const options = { upsert: true };
+
+    // create a filter for a movie to update
+    const filter = body.watchlist;
+    
+    const result = await collection.findOne(filter, options);
+    const film = result.film;
+
+    console.log(result)
+
+    for (var i = 0; i < film.length; i++){
+      console.log(i);
+      if (film[i][0] == body.titlefilm){
+        console.log(film[i][0]);
+        film[i][3] = body.status
+      }
+    }
+
+    const updateItem = {
+      $set: {
+        film: film
+      },
+    };
+
+  const result2 = await collection.updateOne(body.watchlist, updateItem, options);
+
+	return result2;
+
+  } catch(e) {
+	console.log("Pas d'users updaté")
+	console.log(e);
+	throw e;
+  }
+}
+
+
+
+
+
+
+
 
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
@@ -323,5 +373,6 @@ module.exports = {
     insertClient,
     insertMovies,
     createWatchList,
-    insertItem
+    insertItem,
+    updateStatus
 };

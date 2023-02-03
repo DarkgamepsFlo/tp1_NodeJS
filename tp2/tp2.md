@@ -180,8 +180,8 @@ Une fois cela fait, créer les collections mongodb associées à vos entités da
  - Créer un utilisateur //
  - Ajouter un item au registre //
  - Créer une watchlist pour un utilisateur //
- - Ajouter un item dans une watchlist
- - Modifier le statut d'un item dans une watchlist 
+ - Ajouter un item dans une watchlist //
+ - Modifier le statut d'un item dans une watchlist //
  - Afficher les items du registre (avec possibilité de filtrer)
  - Récupérer la liste des utilisateurs
  - Récupérer la liste des watchlists d'un utilisateur
