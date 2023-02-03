@@ -12,30 +12,29 @@ async function findOne(collectionName, query, options = {}) {
 	}
 }
 
-// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 async function find(collectionName) {
   try {
-	const collection = getCollection(collectionName);
-    // query for movies that have a runtime less than 15 minutes
-    const query = { runtime: { $lt: 15 } };
+    const collection = getCollection(collectionName);
+    const query = { name: "Till" };
     const options = {
-      // sort returned documents in ascending order by title (A->Z)
       sort: { name: 1 },
-      // Include only the `title` and `imdb` fields in each returned document
       projection: { _id: 0, name: 1 },
     };
     const cursor = collection.find(query, options);
-    // replace console.dir with your callback to access individual elements
-    await cursor.forEach(console.dir);
-  } catch(e) {
-	console.log("Pas d'users trouvé")
-	console.log(e);
-	throw e;
-  }
-}
 
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Liste parcourant l'ensemble des résultats
+    const result = [];
+    await cursor.forEach((item) => {
+      result.push(item);
+    });
+
+    return result;
+  } catch(e) {
+    console.log("Pas d'users trouvé")
+    console.log(e);
+    throw e;
+    }
+}
 
 async function insertOne(collectionName) {
   try {
@@ -71,7 +70,7 @@ async function insertMany(collectionName) {
 
     const result = await collection.insertMany(docs, options);
     console.log(`${result.insertedCount} documents were inserted`);
-	return result;
+	  return result;
   } catch(e) {
 	console.log("Pas d'users inséré")
 	console.log(e);
@@ -191,7 +190,7 @@ async function deleteMany(collectionName) {
 }
 
 module.exports = {
-    findOne,
+  findOne,
 	find,
 	insertOne,
 	insertMany,
