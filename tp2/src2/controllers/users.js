@@ -1,10 +1,36 @@
-const {  } = require("../services/db/crud"); // insertOne
+const { insertClient, createWatchList, findUsers } = require("../services/db/crud");
 
-
-function createUser(req, res, next) {
-  console.log("Cration ...");
-  res.send("User créé");
+async function createUser(req, res, next) {
+  const body = req.body;
+  try{
+    const result = await insertClient('users', body);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
 }
+
+async function createWatchlist(req, res, next) {
+  const body = req.body;
+  try{
+    const result = await createWatchList('users', body);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
+}
+
+async function findAllUsers(req, res, next) {
+  try{
+    const result = await findUsers('users');
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
+}
+
+
+
 
 // Exemple ///////////////////////////////////////////////////////////
 // async function findUser(req, res, next){
@@ -17,6 +43,8 @@ function createUser(req, res, next) {
 // }
 
 module.exports = {
-
+  createUser,
+  createWatchlist,
+  findAllUsers
 };
 
