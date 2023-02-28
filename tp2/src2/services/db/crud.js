@@ -191,6 +191,32 @@ async function updateStatus(collectionName, body) {
   }
 }
 
+// 6 ////////////////////////
+async function findItem(collectionName, filter) {
+  try {
+    const collection = getCollection(collectionName);
+    const query = { Title: filter };
+    const options = {
+      sort: { name: 1 },
+      projection: { _id: 0, Title: 1, Year: 1 },
+    };
+    const cursor = collection.find(query, options);
+
+    // Liste parcourant l'ensemble des résultats
+    const result = [];
+    await cursor.forEach((item) => {
+      result.push(item);
+    });
+
+    return result;
+  } catch(e) {
+    console.log("Pas d'users trouvé")
+    console.log(e);
+    throw e;
+    }
+}
+
+
 // 7 ////////////////////////
 async function findUsers(collectionName) {
   try {
@@ -266,7 +292,6 @@ async function findFilm(collectionName, nomWatchList) {
     throw e;
     }
 }
-
 
 
 // async function findOne(collectionName, query, options = {}) {
@@ -449,4 +474,5 @@ module.exports = {
     findUsers, 
     findWatchList,
     findFilm,
+    findItem,
 };
