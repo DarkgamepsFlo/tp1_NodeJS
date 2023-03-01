@@ -89,7 +89,7 @@ async function insertWatchlist(collectionName, pseudo) {
   }
 }
 
-// 4 ////////////////////////
+// 4 //////////////////////// !! Il faut que le client ainsi que l'attribut watchLlist existe au préalable
 async function insertItem(collectionName, filter, options = {}) {
   try {
     const collection = getCollection(collectionName);
@@ -291,6 +291,65 @@ async function findFilm(collectionName, nomWatchList) {
     console.log(e);
     throw e;
     }
+}
+
+// 10 //////////////////////////////////
+async function deleteItem(collectionName, filter, options = {}) {
+  try {
+    const collection = getCollection(collectionName);
+    const collection2 = getCollection('movies');
+    const collection3 = getCollection('users');
+
+    const options = { upsert: false };
+
+    // watchlist { id_utilisateur ... } ...
+    const search = {
+      name: filter.watchlist.id_utilisateur
+    };
+
+    // Je récupère les infos du film et de l'utilsateur ayant la watchList 
+    // Infos sur la watchList (qui contient l'ensemble des films)
+    const result3 = await collection.findOne(filter.watchlist, options);
+    // Infos sur le film (l'item) qu'on veut supprimer
+		const result = await collection2.findOne(filter.titre, options);
+    // Infos sur l'utilisateur possédant la watchList
+    const result2 = await collection3.findOne(search, options);
+		
+    // J'ajoute le film dans le watchlist client
+    const newList = result2.watchlist;
+    newList.splice(filter.titre.Title, 1);
+
+    // create a document that sets the plot of the movie
+    const updateDoc = {
+      $set: {
+        watchlist: newList
+      },
+    };
+
+    collection3.updateOne(search, updateDoc, options);
+
+    // J'ajoute les informations du film dans le watchList
+    const newitem = result3.film;
+    newitem.splice([result.Title, result.Year, result.Type], 1);
+
+    // create a document that sets the plot of the movie
+    const updateItem = {
+      $set: {
+        film: newitem
+      },
+    };
+
+    const result4 = await collection.updateOne(filter.watchlist, updateItem, options);
+
+    return result4;
+
+	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
+
+  } catch(e) {
+	console.log("L'item n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
 }
 
 // 11 ////////////////////////////////
@@ -552,4 +611,5 @@ module.exports = {
     findItem,
     deleteWatchlist,
     updateUsers,
+    deleteItem,
 };

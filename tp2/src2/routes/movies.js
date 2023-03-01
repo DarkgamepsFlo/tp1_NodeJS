@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {insertOneMovies, insertOneItem, updatestatus, findWatchlist, findWatchFilm, findItemRegistre, deleteWatchList} = require("../controllers/movies");
+const {insertOneMovies, insertOneItem, updatestatus, findWatchlist, findWatchFilm, findItemRegistre, deleteWatchList, deleteOneFilm} = require("../controllers/movies");
 
 router.post("/insertMovie", insertOneMovies);
 router.post("/insertItem", insertOneItem);
@@ -9,5 +9,6 @@ router.get("/findWatch", findWatchlist);
 router.get("/findFilm", findWatchFilm);
 router.get("/findItemRegistre", findItemRegistre);
 router.post("/deleteWatchList", deleteWatchList);
+router.post("/deleteItem", deleteOneFilm);
 
 module.exports = router;
