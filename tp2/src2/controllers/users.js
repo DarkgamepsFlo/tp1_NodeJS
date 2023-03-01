@@ -1,4 +1,4 @@
-const { insertClient, createWatchList, findUsers } = require("../services/db/crud");
+const { insertClient, createWatchList, findUsers, updateUsers } = require("../services/db/crud");
 
 async function createUser(req, res, next) {
   const body = req.body;
@@ -29,6 +29,22 @@ async function findAllUsers(req, res, next) {
   }
 }
 
+async function updateClient(req, res, next) {
+  const nameAncien = req.query.nomA;
+  nom = req.query.nomN;
+  year = req.query.age;
+  if(!nom)
+    nom = "_";
+  if(!year)
+    year = "_";
+  try{
+    const result = await updateUsers('users', nameAncien, nom, year);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
+}
+
 
 
 
@@ -45,6 +61,7 @@ async function findAllUsers(req, res, next) {
 module.exports = {
   createUser,
   createWatchlist,
-  findAllUsers
+  findAllUsers,
+  updateClient,
 };
 

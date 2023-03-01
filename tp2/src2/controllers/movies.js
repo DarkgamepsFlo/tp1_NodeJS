@@ -1,4 +1,4 @@
-const { insertMovies, insertItem, updateStatus, findWatchList, findFilm, findItem } = require("../services/db/crud"); // insertOne
+const { insertMovies, insertItem, updateStatus, findWatchList, findFilm, findItem, deleteWatchlist } = require("../services/db/crud"); // insertOne
 
 async function insertOneMovies(req, res, next) {
   const body = req.body
@@ -66,6 +66,18 @@ async function findItemRegistre(req, res, next) {
   }
 }
 
+async function deleteWatchList(req, res, next) {
+  const name = req.query.nom
+  if(!name)
+  return res.send("Veuillez choisir une WatchList à supprimer");
+  try{
+    const result = await deleteWatchlist('watchlist', name);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
+}
+
 // Exemple ///////////////////////////////////////////////////////////
 // async function findUser(req, res, next){
 //   try{
@@ -83,4 +95,5 @@ module.exports = {
   findWatchlist,
   findWatchFilm,
   findItemRegistre,
+  deleteWatchList,
 };

@@ -293,6 +293,81 @@ async function findFilm(collectionName, nomWatchList) {
     }
 }
 
+// 11 ////////////////////////////////
+async function updateUsers(collectionName, nomAncien, nomNouveau, yearNouveau) {
+  try {
+    const collection = getCollection(collectionName);
+
+    // create a filter for a movie to update
+    const filter = { name: nomAncien };
+
+    // this option instructs the method to create a document if no documents match the filter
+    const options = { upsert: true };
+
+    if(nomNouveau == "_" && yearNouveau == "_") 
+      return "Veuillez ajouter des nouvelles informations pour pouvoir modifier";
+
+    // create a document that sets the plot of the movie
+    if(yearNouveau == "_"){
+      updateDoc = {
+        $set: {
+          name: nomNouveau
+        }
+      }
+    }
+      
+    if(nomNouveau == "_"){
+      updateDoc = {
+        $set: {
+          age: yearNouveau
+        }
+      }
+    }
+
+    if(nomNouveau != "_" && yearNouveau != "_"){
+      updateDoc = {
+        $set: {
+          name: nomNouveau,
+          age: yearNouveau
+        },
+      };
+    }
+
+    const result = await collection.updateOne(filter, updateDoc, options);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
+    );
+
+	return result;
+  } catch(e) {
+	console.log("Pas d'users updaté")
+	console.log(e);
+	throw e;
+  }
+}
+
+// 12 //////////////////////////////
+async function deleteWatchlist(collectionName, item) {
+  try {
+    const collection = getCollection(collectionName);
+
+    // Query for a movie that has title "Annie Hall"
+    const query = { id_utilisateur: item };
+
+    const result = await collection.deleteOne(query);
+    if (result.deletedCount === 1) {
+      console.log("Successfully deleted one document.");
+    } else {
+      console.log("No documents matched the query. Deleted 0 documents.");
+    }
+	return result;
+  } catch(e) {
+	console.log("La personne n'est pas effacée")
+	console.log(e);
+	throw e;
+  }
+}
+
 
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
@@ -475,4 +550,6 @@ module.exports = {
     findWatchList,
     findFilm,
     findItem,
+    deleteWatchlist,
+    updateUsers,
 };
