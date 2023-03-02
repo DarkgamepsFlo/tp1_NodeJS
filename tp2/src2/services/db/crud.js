@@ -431,20 +431,17 @@ async function deleteWatchlist(collectionName, item) {
 async function addFavori(collectionName, filter, options = {}) {
   try {
     const collection = getCollection(collectionName);
-    const collection3 = getCollection('users');
 
     const options = { upsert: false };
 
     // watchlist { id_utilisateur ... } ...
     const search = {
-      name: filter.watchlist.id_utilisateur
+      id_utilisateur: filter.watchlist.id_utilisateur
     };
 
     // Je récupère les infos du film et de l'utilsateur ayant la watchList 
     // Infos sur la watchList (qui contient l'ensemble des films)
     const result3 = await collection.findOne(filter.watchlist, options);
-    // Infos sur l'utilisateur possédant la watchList
-    const result2 = await collection3.findOne(search, options);
 
     // create a document that sets the plot of the movie
     const updateDoc = {
@@ -453,7 +450,7 @@ async function addFavori(collectionName, filter, options = {}) {
       },
     };
 
-    const result4 = await collection3.updateOne(search, updateDoc, options);
+    const result4 = await collection.updateOne(search, updateDoc, options);
 
     return result4;
     
@@ -468,31 +465,43 @@ async function addFavori(collectionName, filter, options = {}) {
 async function partageWatchlist(collectionName, filter, options = {}) {
   try {
     const collection = getCollection(collectionName);
-    const collection3 = getCollection('users');
+    const collection2 = getCollection('users');
 
     const options = { upsert: false };
 
-    // watchlist { id_utilisateur ... } ...
     const search = {
-      name: filter.watchlist.id_utilisateur
-    };
+        name: filter.users.name
+    }
 
     // Je récupère les infos du film et de l'utilsateur ayant la watchList
     // Infos sur la watchList (qui contient l'ensemble des films)
     const result3 = await collection.findOne(filter.watchlist, options);
     // Infos sur l'utilisateur possédant la watchList
-    const result2 = await collection3.findOne(search, options);
-
+    const result4 = await collection2.findOne({name : filter.watchlist.id_utilisateur}, options);
+    // sur l'utilisateur qui va avoir la copie partagé
+    const result2 = await collection2.findOne(filter.users, options);
+    
+    // On modifie le nom de la variable pour pouvoir l'insérer
+    const variable = "watchlist"+filter.watchlist.id_utilisateur;
     // create a document that sets the plot of the movie
     const updateDoc = {
       $set: {
-        favori: true
+        [variable]: result4.watchlist
       },
     };
 
-    const result4 = await collection3.updateOne(search, updateDoc, options);
+    // Permet de rajouter la watchlist dans la base de donnée de cette personne
+    await collection2.updateOne(search, updateDoc, options);
 
-    return result4;
+    var element = {
+      id_utilisateur: result3.id_utilisateur+filter.users.name,
+      film: result3.film
+    }
+
+    // create a document to insert
+    const result = await collection.insertOne(element);
+
+    return result;
     
   } catch(e) {
 	console.log("L'item n'a pas pu être inséré")
@@ -687,5 +696,6 @@ module.exports = {
     deleteWatchlist,
     updateUsers,
     deleteItem,
-    addFavori
+    addFavori,
+    partageWatchlist,
 };
