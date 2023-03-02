@@ -427,6 +427,81 @@ async function deleteWatchlist(collectionName, item) {
   }
 }
 
+// 13 //////////////////////////////////
+async function addFavori(collectionName, filter, options = {}) {
+  try {
+    const collection = getCollection(collectionName);
+    const collection3 = getCollection('users');
+
+    const options = { upsert: false };
+
+    // watchlist { id_utilisateur ... } ...
+    const search = {
+      name: filter.watchlist.id_utilisateur
+    };
+
+    // Je récupère les infos du film et de l'utilsateur ayant la watchList 
+    // Infos sur la watchList (qui contient l'ensemble des films)
+    const result3 = await collection.findOne(filter.watchlist, options);
+    // Infos sur l'utilisateur possédant la watchList
+    const result2 = await collection3.findOne(search, options);
+
+    // create a document that sets the plot of the movie
+    const updateDoc = {
+      $set: {
+        favori: true
+      },
+    };
+
+    const result4 = await collection3.updateOne(search, updateDoc, options);
+
+    return result4;
+    
+  } catch(e) {
+	console.log("L'item n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
+
+// 14 //////////////////////////////////
+async function partageWatchlist(collectionName, filter, options = {}) {
+  try {
+    const collection = getCollection(collectionName);
+    const collection3 = getCollection('users');
+
+    const options = { upsert: false };
+
+    // watchlist { id_utilisateur ... } ...
+    const search = {
+      name: filter.watchlist.id_utilisateur
+    };
+
+    // Je récupère les infos du film et de l'utilsateur ayant la watchList
+    // Infos sur la watchList (qui contient l'ensemble des films)
+    const result3 = await collection.findOne(filter.watchlist, options);
+    // Infos sur l'utilisateur possédant la watchList
+    const result2 = await collection3.findOne(search, options);
+
+    // create a document that sets the plot of the movie
+    const updateDoc = {
+      $set: {
+        favori: true
+      },
+    };
+
+    const result4 = await collection3.updateOne(search, updateDoc, options);
+
+    return result4;
+    
+  } catch(e) {
+	console.log("L'item n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
+
+
 
 // async function findOne(collectionName, query, options = {}) {
 // 	try {
@@ -612,4 +687,5 @@ module.exports = {
     deleteWatchlist,
     updateUsers,
     deleteItem,
+    addFavori
 };
