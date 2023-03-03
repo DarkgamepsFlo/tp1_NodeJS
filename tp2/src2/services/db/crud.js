@@ -18,7 +18,6 @@ async function insertClient(collectionName, doc) {
 }
 
 // 2 ////////////////////////
-// insertMovies('movies', {title: The Second 100 Years, key: key});
 async function insertMovies(collectionName, doc) {
   try {
     // create a document to insert
@@ -510,6 +509,64 @@ async function partageWatchlist(collectionName, filter, options = {}) {
   }
 }
 
+// 15 //////////////////////////////////
+async function ajoutDescription(collectionName, filter, options = {}) {
+  try {
+    const collection = getCollection(collectionName);
+
+    const options = { upsert: false };
+
+    var result = "";
+    var resultFilm;
+    var i = 0;
+
+    // Variable permettant de trouver une watchList
+    const searchWatch = {
+      id_utilisateur: filter.watchlist.id_utilisateur
+    }
+
+    // Variable permettant d'ajouter la description de la watchList ou film
+    const updateDoc = {
+      $set: {
+        descriptions: filter.descriptions.content
+      }
+    }
+
+    // Infos sur la watchList (qui contient l'ensemble des films)
+    const result3 = await collection.findOne(filter.watchlist, options);
+    
+    // S'il n'y a pas de titre, on update directement la watchList
+    if(filter.film.Title == "_"){
+      result = collection.updateOne(searchWatch, updateDoc, options);
+    }
+
+    // S'il y a un titred, on update le film (Il faut récupérer le film et mettre la description)
+    if(filter.film.Title != "_"){
+      // Liste de film
+      resultFilm = result3.film;
+      await resultFilm.forEach((item) => {
+        if(item[0] == filter.film.Title){
+          resultFilm[i].push(filter.descriptions.content)
+        }
+        i++
+        const updateFilm = {
+          $set: {
+            film: resultFilm
+          }
+        }
+    
+        result = collection.updateOne(searchWatch, updateFilm, options);
+      });
+    }
+    
+    return result;
+    
+  } catch(e) {
+	console.log("L'item n'a pas pu être inséré")
+	console.log(e);
+	throw e;
+  }
+}
 
 
 // async function findOne(collectionName, query, options = {}) {
@@ -698,4 +755,5 @@ module.exports = {
     deleteItem,
     addFavori,
     partageWatchlist,
+    ajoutDescription
 };
