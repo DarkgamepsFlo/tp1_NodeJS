@@ -1,0 +1,20 @@
+html
+  head
+    title= title
+  body
+  h1= message
+    h3 Pour ajouter un user dans la Base de données :
+    form(action='/users/create', method='POST', role='form')
+      p 
+        | Entrez le nom de l'user :
+        input(name='name', value='', type='text')  
+        br
+        | Entrez l'âge de l'user : 
+        input(name='age', value='', type='text')              
+      input(value='Submit', type='submit')
+    h3 Pour ajouter une watchList à un utilisateur :
+    form(action='/users/createWatchlist', method='POST', role='form')
+      p 
+        | Entrez le nom de l'user ayant une nouvelle watchList :
+        input(name='name', value='', type='text')              
+      input(value='Submit', type='submit')

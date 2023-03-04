@@ -30,18 +30,24 @@ app.use('/users', users);
 app.use('/movies', movies);
 
 app.get('/', (req, res, next) => {
-    return res.send('Hello World !');
+    res.render("home", {
+        title: "Gestionnaire de watchlist",
+        message: "Hello World!",
+    });
 });
 
 app.get('/users', (req, res, next) => {
-    res.render("home", {
-        title: "Gestionnaire de watchlist",
-        message: "Hello Watchlist!",
+    res.render("user", {
+        title: "Gestionnaire des users",
+        message: "Hello Users!",
       });
 });
 
 app.get('/movies', (req, res, next) => {
-    return res.send("Veuillez faire /movies/[option]</br> insertMovie : Permet d'enregistrer un film dans le registre");
+    res.render("movies", {
+        title: "Gestionnaire des movies et des watchlist",
+        message: "Hello Watchlist & Movies!",
+    });
 });
 
 // app.get('/health', (req, res, next) => {

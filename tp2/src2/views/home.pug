@@ -2,11 +2,10 @@ html
   head
     title= title
   body
-    form(action='/users/create', method='POST', role='form')
-      p 
-        | Entrez le nom de l'user :
-        input(name='name', value='', type='text')  
-        br
-        | Entrez l'âge de l'user : 
-        input(name='age', value='', type='text')              
-      input(value='Submit', type='submit')
+    h1= message
+    | Pour aller dans le menu des users : 
+    a(href='http://localhost:3000/users') Users
+    br
+    | Pour aller dans le menu des movies et watchlists : 
+    a(href='http://localhost:3000/movies') Movies
+

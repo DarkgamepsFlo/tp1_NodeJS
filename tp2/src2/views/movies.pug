@@ -1,0 +1,15 @@
+html
+  head
+    title= title
+  body
+  h1= message
+  p 
+    h3 Pour ajouter un film dans la Base de données :
+    form(action='/movies/insertMovie', method='POST', role='form')
+      p 
+        | Entrez le nom du film à ajouter :
+        input(name='s', value='', type='text')  
+        br
+        | Entrez votre apikey (présent sur le site omdapi) : 
+        input(name='apikey', value='', type='text')              
+      input(value='Submit', type='submit')

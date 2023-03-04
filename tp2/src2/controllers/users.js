@@ -2,7 +2,6 @@ const { insertClient, createWatchList, findUsers, updateUsers } = require("../se
 
 async function createUser(req, res, next) {
   const body = req.body;
-  console.log(body.age)
   try{
     const result = await insertClient('users', body);
     return res.send(result);

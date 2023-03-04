@@ -1,6 +1,8 @@
+// import
 var axios = require("axios").default;
 const { getCollection } = require('../services/db/connection');
 
+// Cette fonction va permettre de rechercher un film dans l'API de omdapi pour pouvoir l'ajouter dans la base de données
 function searchMovies(collectionName, doc){
   var options = {
     method: 'GET',
@@ -8,6 +10,7 @@ function searchMovies(collectionName, doc){
     params: doc
   };
   
+  // On exécuter une requête avec axios pour récupérer les informations du film
   axios.request(options).then(function (response) {
     
     console.log(response.data.Search);

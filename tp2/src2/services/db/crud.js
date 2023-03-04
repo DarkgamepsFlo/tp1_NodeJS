@@ -4,44 +4,47 @@
 const { getCollection } = require('../../../src2/services/db/connection');
 const { searchMovies } = require('../../../src2/repositories/omdbapi');
 
-// Cette fonction va permettre d'insérer un client dans la base de données
+// 1 //
+// Cette fonction va permettre d'insérer un utilisateur dans la Base de données
 async function insertClient(collectionName, doc) {
   try {
+    // On contient dans une variable l'ensemble des éléments présents dans la table inséré en paramètre
     const collection = getCollection(collectionName);
-    // create a document to insert
+    // On va insérer l'utilisateur dans la table puis préciser qu'il est bien inséré
     const result = await collection.insertOne(doc);
-	console.log(`A document was inserted with the _id: ${result.insertedId}`);
-	return ("Le client est bien enregistré dans la base de données");
+	  console.log(`A document was inserted with the _id: ${result.insertedId}`);
+	  return ("<h1>L'utilisateur est bien enregistré dans la base de données</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
 
-  } catch(e) {
-	console.log("Le client n'a pas pu être inséré")
+  } catch(e) { // S'il y a un problème, on va préciser que l'utilisateur n'est pas inséré
 	console.log(e);
-	throw e;
+	throw "<h1>Le client n'a pas pu être inséré</h1>";
   }
 }
 
-// 2 ////////////////////////
+// 2 //
+// Cette fonction va permettre d'insérer un film dans la Base de données
 async function insertMovies(collectionName, doc) {
   try {
-    // create a document to insert
+    // On fait appel à la fonction présente dans le fichier omdbapi.js pour pouvoir ajouter un film puis on précise que le film est bien ajouté
     searchMovies(collectionName, doc);
-    return "Le film est bien enregistré dans la base de données";
-	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return ("<h1>Le film est bien enregistré dans la base de données</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
 
-  } catch(e) {
+  } catch(e) { // S'il y a un problème, on va préciser que le film n'est pas inséré
 	console.log("Le film n'a pas pu être inséré")
 	console.log(e);
-	throw e;
+	throw "<h1>Le film n'a pas pu être inséré</h1>";
   }
 }
 
-// 3 ////////////////////////
+// 3 //
+// Cette fonction va permettre de créer une watchlist pour un utilisateur
 async function createWatchList(collectionName, filter) {
   try {
+    // On récupère les données de la tablre passé en paramètre
     const collection = getCollection(collectionName);
 
     // this option instructs the method to create a document if no documents match the filter
-    const options = { upsert: false };
+    const options = { upsert: true };
 
     // create a document that sets the plot of the movie
     const updateDoc = {
@@ -50,18 +53,16 @@ async function createWatchList(collectionName, filter) {
       },
     };
 
-    console.log(filter.name);
-
+    // On va ajouter une variable watchlist de type Array pour l'utilisateur choisi
     const result = await collection.updateOne(filter, updateDoc, options);
 
-    const result2 = insertWatchlist("watchlist", filter.name);
-
-    console.log(result2);
+    // On va ajouter une nouvelle watchList dans la table watchList
+    insertWatchlist("watchlist", filter.name);
 
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
     );
-	  return result;
+	  return ("<h1>La watchList est bien ajouté à l'utilisateur</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
   } catch(e) {
 	console.log("Pas d'users updaté")
 	console.log(e);
