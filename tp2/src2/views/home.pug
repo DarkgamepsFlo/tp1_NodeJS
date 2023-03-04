@@ -1,0 +1,12 @@
+html
+  head
+    title= title
+  body
+    form(action='/users/create', method='POST', role='form')
+      p 
+        | Entrez le nom de l'user :
+        input(name='name', value='', type='text')  
+        br
+        | Entrez l'âge de l'user : 
+        input(name='age', value='', type='text')              
+      input(value='Submit', type='submit')

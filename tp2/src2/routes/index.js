@@ -7,6 +7,9 @@ const movies = require('./movies');
 //     requestsCount: {},
 // };
 
+app.use(express.urlencoded({ extended: false }));
+app.set("view engine", "pug");
+
 app.use(express.json());
 
 // app.use((req, res, next) => {
@@ -31,7 +34,10 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/users', (req, res, next) => {
-    return res.send('Veuillez faire /users/[option]</br> create : Permet de créer un joueur');
+    res.render("home", {
+        title: "Gestionnaire de watchlist",
+        message: "Hello Watchlist!",
+      });
 });
 
 app.get('/movies', (req, res, next) => {

@@ -1,14 +1,17 @@
+// Ce fichier regroupe l'ensemble des fonctions permettant de répondre à l'ensemble des fonctionnalités demandées dans l'énoncé
+
+// import
 const { getCollection } = require('../../../src2/services/db/connection');
 const { searchMovies } = require('../../../src2/repositories/omdbapi');
 
-// 1 ////////////////////////
+// Cette fonction va permettre d'insérer un client dans la base de données
 async function insertClient(collectionName, doc) {
   try {
     const collection = getCollection(collectionName);
     // create a document to insert
     const result = await collection.insertOne(doc);
 	console.log(`A document was inserted with the _id: ${result.insertedId}`);
-	return "Le client est bien enregistré dans la base de données";
+	return ("Le client est bien enregistré dans la base de données");
 
   } catch(e) {
 	console.log("Le client n'a pas pu être inséré")
