@@ -70,8 +70,11 @@ async function createWatchList(collectionName, filter) {
   }
 }
 
+// Cette fonction permet d'insérer une watchList dans la base de données.
+// Elle est utilisé dans createWatchList
 async function insertWatchlist(collectionName, pseudo) {
   try {
+    // On récupère l'ensemble des éléments de la table watchlist
     const collection = getCollection(collectionName);
 
     var element = {
@@ -92,27 +95,38 @@ async function insertWatchlist(collectionName, pseudo) {
   }
 }
 
-// 4 //////////////////////// !! Il faut que le client ainsi que l'attribut watchLlist existe au préalable
+// 4 //
+// Cette fonction permet d'ajouter un film dans une WatchList !! Il faut que le client ainsi que l'attribut watchLlist existe au préalable
 async function insertItem(collectionName, filter, options = {}) {
   try {
+    // On récupère l'ensemble des éléments de la base de données
     const collection = getCollection(collectionName);
     const collection2 = getCollection('movies');
     const collection3 = getCollection('users');
 
     const options = { upsert: false };
 
+    // Les variables search, search2, search3 vont permettre de trouver les éléments qu'il nous faut
     const search = {
-      name: filter.watchlist.id_utilisateur
+      name: filter.id_utilisateur
     };
 
-    // Je récupère les infos du film et de l'utilsateur ayant la watchList 
-    const result3 = await collection.findOne(filter.watchlist, options);
-		const result = await collection2.findOne(filter.titre, options);
+    const search2 = {
+      id_utilisateur: filter.id_utilisateur
+    }
+
+    const search3 = {
+      Title: filter.Title
+    }
+
+    // Je récupère les infos du film, de la watchlist et de l'utilisateur possèdant cette watchList
+    const result3 = await collection.findOne(search2, options);
+		const result = await collection2.findOne(search3, options);
     const result2 = await collection3.findOne(search, options);
 		
-    // J'ajoute le film dans le watchlist client
+    // J'ajoute le film dans la watchlist de l'utilisateur
     const newList = result2.watchlist;
-    newList.push(filter.titre.Title);
+    newList.push(filter.Title);
 
     // create a document that sets the plot of the movie
     const updateDoc = {
@@ -123,7 +137,7 @@ async function insertItem(collectionName, filter, options = {}) {
 
     collection3.updateOne(search, updateDoc, options);
 
-    // J'ajoute les informations du film dans le watchList
+    // J'ajoute les informations du film dans la watchList correspondant à celle de l'utilisateur
     const newitem = result3.film;
     newitem.push([result.Title, result.Year, result.Type, "A voir"]);
 
@@ -135,11 +149,10 @@ async function insertItem(collectionName, filter, options = {}) {
       },
     };
 
-    const result4 = await collection.updateOne(filter.watchlist, updateItem, options);
+    collection.updateOne(search2, updateItem, options);
 
-    return result4;
-
-	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return ("<h1>Le film est bien inséré dans la Watchlist</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
 
   } catch(e) {
 	console.log("L'item n'a pas pu être inséré")
@@ -148,31 +161,31 @@ async function insertItem(collectionName, filter, options = {}) {
   }
 }
 
-// Récupérer la variable contenant les états d'un film
-// const result666 = await collection.findOne(filter.watchlist, options);
-// console.log(result666.film[identifiant_du_film][3]);
-  
-// 5 ////////////////////////
-// Le body contient le nom de la watchlist, le nom du film et le nom du status à attribuer
+// 5 //
+// Cette fonction va permettre de modifier le status d'un film se trouvant dans une WatchList (Il est de base égal à "à voir")
 async function updateStatus(collectionName, body) {
   try {
+    // On récupère les élements de la table watchList
     const collection = getCollection(collectionName);
+    
+    console.log(body)
+
+    const search = {
+      id_utilisateur: body.id_utilisateur
+    }
 
     // this option instructs the method to create a document if no documents match the filter
     const options = { upsert: true };
-
-    // create a filter for a movie to update
-    const filter = body.watchlist;
     
-    const result = await collection.findOne(filter, options);
+    // On récupère la liste de film se trouvant dans la watList
+    const result = await collection.findOne(search, options);
+    console.log(result);
     const film = result.film;
 
-    console.log(result)
-
+    // Pour chaque film, si le film possède le même titre que celui qu'on veut modifier.
+    // Si oui, on va mondifier son status par celui qu'on veut mettre
     for (var i = 0; i < film.length; i++){
-      console.log(i);
       if (film[i][0] == body.titlefilm){
-        console.log(film[i][0]);
         film[i][3] = body.status
       }
     }
@@ -183,9 +196,10 @@ async function updateStatus(collectionName, body) {
       },
     };
 
-  const result2 = await collection.updateOne(body.watchlist, updateItem, options);
+    // On va modifier le film dans la watchList en le remplacant par le même film avec un nouveau status
+    collection.updateOne(search, updateItem, options);
 
-	return result2;
+	  return ("<h1>Le status est bien modifié</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
 
   } catch(e) {
 	console.log("Pas d'users updaté")
@@ -194,18 +208,28 @@ async function updateStatus(collectionName, body) {
   }
 }
 
-// 6 ////////////////////////
+// 6 //
+// Cette fontion va nous permettre de trouver un film dans la liste de film 
 async function findItem(collectionName, filter) {
   try {
     const collection = getCollection(collectionName);
-    const query = { Title: filter };
+
+    // Si le nom est égal à "_", alors on va récupétrer l'ensemble des éléments
+    if(filter == "_"){
+      console.log("Il n'y a pas de nom de film")
+      var query = { };
+    }
+    else  
+      var query = { Title: filter };
+      
+    // On récupère l'ensemble des éléments de la table film
     const options = {
       sort: { name: 1 },
       projection: { _id: 0, Title: 1, Year: 1 },
     };
     const cursor = collection.find(query, options);
 
-    // Liste parcourant l'ensemble des résultats
+    // Liste parcourant l'ensemble des résultats, on ajoute le résultat dans une autre liste si le titre correspond
     const result = [];
     await cursor.forEach((item) => {
       result.push(item);
@@ -220,9 +244,12 @@ async function findItem(collectionName, filter) {
 }
 
 
-// 7 ////////////////////////
+// 7 //
+// Cette fonction va permettre de récupérer la liste de m'ensemble des utilisateurs
 async function findUsers(collectionName) {
   try {
+
+    // On va récupérer l'ensemble des éléments dans la table users
     const collection = getCollection(collectionName);
     const query = {};
     const options = {
@@ -231,7 +258,7 @@ async function findUsers(collectionName) {
     };
     const cursor = collection.find(query, options);
 
-    // Liste parcourant l'ensemble des résultats
+    // On va ajouter chaque résultat dans une liste qu'on va afficher
     const result = [];
     await cursor.forEach((item) => {
       result.push(item);
@@ -245,9 +272,12 @@ async function findUsers(collectionName) {
     }
 }
 
-// 8 ////////////////////////
+// 8 //
+// Cette fonction va permettre d'afficher l'ensemble des watchLists d'un utilisateur
 async function findWatchList(collectionName, nom) {
   try {
+
+    // On va récupérer l'ensemble des utilisateurs
     const collection = getCollection(collectionName);
     const query = {name : nom};
     const options = {
@@ -256,10 +286,9 @@ async function findWatchList(collectionName, nom) {
     };
     const cursor = collection.find(query, options);
 
-    // Liste parcourant l'ensemble des résultats
+    // On va ajouter l'ensemble des watchLists de l'utilisateur
     const result = [];
     await cursor.forEach((item) => {
-      console.log(item);
       result.push(item);
     });
 
@@ -271,7 +300,8 @@ async function findWatchList(collectionName, nom) {
     }
 }
 
-// 9 ////////////////////////
+// 9 //
+// Cette fonction permet de récupérer le contenu d'une WatchList
 async function findFilm(collectionName, nomWatchList) {
   try {
     const collection = getCollection(collectionName);

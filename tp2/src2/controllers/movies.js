@@ -1,5 +1,7 @@
 const { insertMovies, insertItem, updateStatus, findWatchList, findFilm, findItem, deleteWatchlist, deleteItem, addFavori, partageWatchlist, ajoutDescription } = require("../services/db/crud"); // insertOne
 
+// 2 //
+// Cette fonction permet d'appeler la fonction insertMovies lorsqu'on se situe sur la bonne URL
 async function insertOneMovies(req, res, next) {
   const body = req.body
   try{
@@ -10,6 +12,8 @@ async function insertOneMovies(req, res, next) {
   }
 }
 
+// 4 //
+// Cette fonction permet d'appeler la fonction insertItem lorsqu'on se situe sur la bonne URL
 async function insertOneItem(req, res, next) {
   const body = req.body
   try{
@@ -20,6 +24,8 @@ async function insertOneItem(req, res, next) {
   }
 }
 
+// 5 //
+// Cette fonction permet d'appeler la fonction updatestatus lorsqu'on se situe sur la bonne URL
 async function updatestatus(req, res, next) {
   const body = req.body
   try{
@@ -30,6 +36,8 @@ async function updatestatus(req, res, next) {
   }
 }
 
+// 8 //
+// Cette fonction permet d'appeler la fonction findWatchList lorsqu'on se situe sur la bonne URL
 async function findWatchlist(req, res, next) {
   const name = req.query.name
   if(!name)
@@ -54,10 +62,12 @@ async function findWatchFilm(req, res, next) {
   }
 }
 
+// 6 //
+// Cette fonction permet d'appeler la fonction findItem lorsqu'on se situe sur la bonne URL
 async function findItemRegistre(req, res, next) {
-  const name = req.query.Title
+  var name = req.query.Title
   if(!name)
-  return res.send("Veuillez saisir un filtre");
+    name="_";
   try{
     const result = await findItem('movies', name);
     return res.send(result);

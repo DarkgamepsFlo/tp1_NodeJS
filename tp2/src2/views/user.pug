@@ -12,9 +12,13 @@ html
         | Entrez l'âge de l'user : 
         input(name='age', value='', type='text')              
       input(value='Submit', type='submit')
+
     h3 Pour ajouter une watchList à un utilisateur :
     form(action='/users/createWatchlist', method='POST', role='form')
       p 
         | Entrez le nom de l'user ayant une nouvelle watchList :
         input(name='name', value='', type='text')              
       input(value='Submit', type='submit')
+
+    h3 Pour afficher l'ensemble des utilisateurs :
+    a(href='http://localhost:3000/users/findUser') Afficher l'ensemble des utilisateurs

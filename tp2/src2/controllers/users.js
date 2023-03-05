@@ -1,5 +1,7 @@
 const { insertClient, createWatchList, findUsers, updateUsers } = require("../services/db/crud");
 
+// 1 //
+// Cette fonction permet d'appeler la fonction insertClient lorsqu'on se situe sur la bonne URL
 async function createUser(req, res, next) {
   const body = req.body;
   try{
@@ -10,6 +12,8 @@ async function createUser(req, res, next) {
   }
 }
 
+// 3 //
+// Cette fonction permet d'appeler la fonction createWatchList lorsqu'on se situe sur la bonne URL
 async function createWatchlist(req, res, next) {
   const body = req.body;
   try{
@@ -20,6 +24,8 @@ async function createWatchlist(req, res, next) {
   }
 }
 
+// 7 //
+// Cette fonction permet d'appeler la fonction findAllUsers lorsqu'on se situe sur la bonne URL
 async function findAllUsers(req, res, next) {
   try{
     const result = await findUsers('users');

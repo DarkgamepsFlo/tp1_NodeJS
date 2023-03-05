@@ -13,3 +13,51 @@ html
         | Entrez votre apikey (présent sur le site omdapi) : 
         input(name='apikey', value='', type='text')              
       input(value='Submit', type='submit')
+
+    h3 Pour ajouter un film dans une WatchList :
+    form(action='/movies/insertItem', method='POST', role='form')
+      p 
+        | Entrez le nom de la watchList :
+        input(name='id_utilisateur', value='', type='text')  
+        br
+        | Entrez le nom du film à ajouter : 
+        input(name='Title', value='', type='text')              
+      input(value='Submit', type='submit')
+
+    h3 Pour Modifier le status d'un film dans une WatchList :
+    form(action='/movies/updateStatus', method='POST', role='form')
+      p 
+        | Entrez le nom de la watchList :
+        input(name='id_utilisateur', value='', type='text')  
+        br
+        | Entrez le nom du film à modifier : 
+        input(name='titlefilm', value='', type='text') 
+        br
+        | Veuillez sélectionner le nouveau status : 
+        select(name='status')
+          option(value="A voir") A voir
+          option(value="En cours") En cours
+          option(value="Terminé") Terminé
+          option(value="Abandonné") Abandonné
+      input(value='Submit', type='submit')
+
+    h3 Pour trouver un film dans la Base de données :
+    form(action='/movies/findItemRegistre', method='GET', role='form')
+      p 
+        | Entrez le nom du film :
+        input(name='Title', value='', type='text')              
+      input(value='Submit', type='submit')
+
+    h3 Pour lister toutes les watchLists d'un utilisateur :
+    form(action='/movies/findWatch', method='GET', role='form')
+      p 
+        | Entrez le nom de l'utilisateur :
+        input(name='name', value='', type='text')              
+      input(value='Submit', type='submit')
+
+
+      
+
+
+
+
