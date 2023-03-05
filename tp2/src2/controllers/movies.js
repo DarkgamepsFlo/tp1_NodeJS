@@ -36,12 +36,28 @@ async function updatestatus(req, res, next) {
   }
 }
 
+// 6 //
+// Cette fonction permet d'appeler la fonction findItem lorsqu'on se situe sur la bonne URL
+async function findItemRegistre(req, res, next) {
+  var name = req.query.Title
+  // Si la case est vide, alors la variable est égal à "_"
+  if(!name)
+    name="_";
+  try{
+    const result = await findItem('movies', name);
+    return res.send(result);
+  }catch(e){
+    console.log(e);
+  }
+}
+
 // 8 //
 // Cette fonction permet d'appeler la fonction findWatchList lorsqu'on se situe sur la bonne URL
 async function findWatchlist(req, res, next) {
   const name = req.query.name
+  // Si le nom est absant, on va demander de saisir un nom d'utilisateur
   if(!name)
-  return res.send("Veuillez saisir un numéro d'utilisateur");
+  return res.send("<h1>Veuillez saisir un nom d'utilisateur</h1>");
   try{
     const result = await findWatchList('users', name);
     return res.send(result);
@@ -50,6 +66,8 @@ async function findWatchlist(req, res, next) {
   }
 }
 
+// 9 //
+// Cette fonction permet d'appeler la fonction findFilm lorsqu'on se situe sur la bonne URL
 async function findWatchFilm(req, res, next) {
   const name = req.query.id_utilisateur
   if(!name)
@@ -62,14 +80,12 @@ async function findWatchFilm(req, res, next) {
   }
 }
 
-// 6 //
-// Cette fonction permet d'appeler la fonction findItem lorsqu'on se situe sur la bonne URL
-async function findItemRegistre(req, res, next) {
-  var name = req.query.Title
-  if(!name)
-    name="_";
+// 10 //
+// Cette fonction permet d'appeler la fonction deleteItem lorsqu'on se situe sur la bonne URL
+async function deleteOneFilm(req, res, next) {
+  const body = req.body
   try{
-    const result = await findItem('movies', name);
+    const result = await deleteItem('watchlist', body);
     return res.send(result);
   }catch(e){
     console.log(e);
@@ -88,15 +104,6 @@ async function deleteWatchList(req, res, next) {
   }
 }
 
-async function deleteOneFilm(req, res, next) {
-  const body = req.body
-  try{
-    const result = await deleteItem('watchlist', body);
-    return res.send(result);
-  }catch(e){
-    console.log(e);
-  }
-}
 
 async function watchlistFavori(req, res, next) {
   const body = req.body

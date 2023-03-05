@@ -55,8 +55,24 @@ html
         input(name='name', value='', type='text')              
       input(value='Submit', type='submit')
 
+    h3 Pour lister tout les films d'un utilisateur :
+    form(action='/movies/findFilm', method='GET', role='form')
+      p 
+        | Entrez le nom d'une watchList :
+        input(name='id_utilisateur', value='', type='text')              
+      input(value='Submit', type='submit')
 
-      
+    h3 Pour supprimer un film d'une watchList :
+    form(action='/movies/deleteItem', method='POST', role='form')
+      p 
+        | Entrez le nom d'une watchList :
+        input(name='id_utilisateur', value='', type='text')     
+        br 
+        | Entrez le nom d'un film :
+        input(name='titre', value='', type='text')         
+      input(value='Submit', type='submit')
+
+
 
 
 

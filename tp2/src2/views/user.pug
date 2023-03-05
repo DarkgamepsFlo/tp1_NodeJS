@@ -22,3 +22,20 @@ html
 
     h3 Pour afficher l'ensemble des utilisateurs :
     a(href='http://localhost:3000/users/findUser') Afficher l'ensemble des utilisateurs
+
+    h3 Pour modifier les informations d'un utilisateur :
+    form(action='/users/updateUser', method='POST', role='form')
+      p 
+        | Entrez le nom de l'user qui va subir les modifications :
+        input(name='nomAncien', value='', type='text')       
+        br
+        | Entrez le nouveau nom de l'utilisateur :
+        input(name='nomNouveau', value='', type='text')
+        br
+        | Entrez le nouvel age de l'utilisateur :
+        input(name='yearNouveau', value='', type='text')       
+      input(value='Submit', type='submit')
+
+    h2
+      | Pour retourner au Menu principal : 
+      a(href='http://localhost:3000') Menu

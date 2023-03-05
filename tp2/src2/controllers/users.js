@@ -35,16 +35,19 @@ async function findAllUsers(req, res, next) {
   }
 }
 
+// 11 //
+// Cette fonction permet d'appeler la fonction findAllUsers lorsqu'on se situe sur la bonne URL
 async function updateClient(req, res, next) {
-  const nameAncien = req.query.nomA;
-  nom = req.query.nomN;
-  year = req.query.age;
+  const nameAncien = req.body;
+  nom = nameAncien.nomNouveau;
+  year = nameAncien.yearNouveau;
+  // S'il n'y a pas de noms ou d'age, la valeur est égal à "_"
   if(!nom)
-    nom = "_";
+    nameAncien.nomNouveau = "_";
   if(!year)
-    year = "_";
+    nameAncien.yearNouveau = "_";
   try{
-    const result = await updateUsers('users', nameAncien, nom, year);
+    const result = await updateUsers('users', nameAncien);
     return res.send(result);
   }catch(e){
     console.log(e);

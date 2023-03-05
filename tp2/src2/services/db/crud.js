@@ -304,6 +304,7 @@ async function findWatchList(collectionName, nom) {
 // Cette fonction permet de récupérer le contenu d'une WatchList
 async function findFilm(collectionName, nomWatchList) {
   try {
+    // On récupère l'ensemble des éléments dans la table watchList
     const collection = getCollection(collectionName);
     const query = {id_utilisateur : nomWatchList};
     const options = {
@@ -312,7 +313,7 @@ async function findFilm(collectionName, nomWatchList) {
     };
     const cursor = collection.find(query, options);
 
-    // Liste parcourant l'ensemble des résultats
+    // Liste parcourant l'ensemble des résultats et on ajouter les films dans une liste si le nom de la watchList correspond
     const result = [];
     await cursor.forEach((item) => {
       result.push(item);
@@ -326,31 +327,40 @@ async function findFilm(collectionName, nomWatchList) {
     }
 }
 
-// 10 //////////////////////////////////
+// 10 //
+// Cette fonction permet de supprimer un item d'une watchList
 async function deleteItem(collectionName, filter, options = {}) {
   try {
+    // On récupère l'ensemble des éléments de chaque tables
     const collection = getCollection(collectionName);
     const collection2 = getCollection('movies');
     const collection3 = getCollection('users');
 
     const options = { upsert: false };
 
-    // watchlist { id_utilisateur ... } ...
     const search = {
-      name: filter.watchlist.id_utilisateur
+      name: filter.id_utilisateur
+    };
+
+    const search2 = {
+      id_utilisateur: filter.id_utilisateur
+    };
+
+    const search3 = {
+      Title: filter.titre
     };
 
     // Je récupère les infos du film et de l'utilsateur ayant la watchList 
     // Infos sur la watchList (qui contient l'ensemble des films)
-    const result3 = await collection.findOne(filter.watchlist, options);
+    const result3 = await collection.findOne(search2, options);
     // Infos sur le film (l'item) qu'on veut supprimer
-		const result = await collection2.findOne(filter.titre, options);
+		const result = await collection2.findOne(search3, options);
     // Infos sur l'utilisateur possédant la watchList
     const result2 = await collection3.findOne(search, options);
 		
     // J'ajoute le film dans le watchlist client
     const newList = result2.watchlist;
-    newList.splice(filter.titre.Title, 1);
+    newList.splice(filter.titre, 1);
 
     // create a document that sets the plot of the movie
     const updateDoc = {
@@ -372,11 +382,10 @@ async function deleteItem(collectionName, filter, options = {}) {
       },
     };
 
-    const result4 = await collection.updateOne(filter.watchlist, updateItem, options);
+    collection.updateOne(search2, updateItem, options);
 
-    return result4;
-
-	// console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return "<h1>L'Item est bien supprimé de la watchList</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>"
 
   } catch(e) {
 	console.log("L'item n'a pas pu être inséré")
@@ -385,42 +394,47 @@ async function deleteItem(collectionName, filter, options = {}) {
   }
 }
 
-// 11 ////////////////////////////////
-async function updateUsers(collectionName, nomAncien, nomNouveau, yearNouveau) {
+// 11 //
+// Cette fonction va nous permettre de modifier les informations d'un utilisateur
+async function updateUsers(collectionName, body) {
   try {
     const collection = getCollection(collectionName);
 
     // create a filter for a movie to update
-    const filter = { name: nomAncien };
+    const filter = { name: body.nomAncien };
 
     // this option instructs the method to create a document if no documents match the filter
     const options = { upsert: true };
 
-    if(nomNouveau == "_" && yearNouveau == "_") 
-      return "Veuillez ajouter des nouvelles informations pour pouvoir modifier";
+    // Si rien est rempli, on va demander de saisir quelque chose
+    if(body.nomNouveau == "_" && body.yearNouveau == "_") 
+      return "<h1>Veuillez ajouter des nouvelles informations pour pouvoir modifier</h1><p>Pour choisir des paramètre de mdifiation : <a href='http://localhost:3000/users'>Page précédente</a></p>";
 
     // create a document that sets the plot of the movie
-    if(yearNouveau == "_"){
+    // S'il n'y a pas d'age, on modifie que le nom
+    if(body.yearNouveau == "_"){
       updateDoc = {
         $set: {
-          name: nomNouveau
+          name: body.nomNouveau
         }
       }
     }
       
-    if(nomNouveau == "_"){
+    // S'il n'y a pas de nom, on modifie uniquement l'age
+    if(body.nomNouveau == "_"){
       updateDoc = {
         $set: {
-          age: yearNouveau
+          age: body.yearNouveau
         }
       }
     }
 
-    if(nomNouveau != "_" && yearNouveau != "_"){
+    // Sinon on va modifier les deux
+    if(body.nomNouveau != "_" && body.yearNouveau != "_"){
       updateDoc = {
         $set: {
-          name: nomNouveau,
-          age: yearNouveau
+          name: body.nomNouveau,
+          age: body.yearNouveau
         },
       };
     }
@@ -430,13 +444,16 @@ async function updateUsers(collectionName, nomAncien, nomNouveau, yearNouveau) {
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
     );
 
-	return result;
+	  return "<h1>Les modifications apportées à l'utilisateur ont fonctionnées</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
   } catch(e) {
 	console.log("Pas d'users updaté")
 	console.log(e);
 	throw e;
   }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // 12 //////////////////////////////
 async function deleteWatchlist(collectionName, item) {
@@ -601,178 +618,6 @@ async function ajoutDescription(collectionName, filter, options = {}) {
 	throw e;
   }
 }
-
-
-// async function findOne(collectionName, query, options = {}) {
-// 	try {
-// 		const collection = getCollection(collectionName);
-// 		const result = await collection.findOne(query, options);
-// 		return result;
-// 	} catch (e) {
-// 		console.log(`Erreur lors de l execution de la fonction findOne avec les parametres suivants: ${query}`);
-// 		console.log(e);
-// 		throw e;
-// 	}
-// }
-
-// async function find(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-//     const query = { name: "Till" };
-//     const options = {
-//       sort: { name: 1 },
-//       projection: { _id: 0, name: 1 },
-//     };
-//     const cursor = collection.find(query, options);
-
-//     // Liste parcourant l'ensemble des résultats
-//     const result = [];
-//     await cursor.forEach((item) => {
-//       result.push(item);
-//     });
-
-//     return result;
-//   } catch(e) {
-//     console.log("Pas d'users trouvé")
-//     console.log(e);
-//     throw e;
-//     }
-// }
-
-// async function insertMany(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-
-//     // create an array of documents to insert
-//     const docs = [
-//       { name: "Till" },
-//       { name: "Flake" },
-//       { name: "Chris" }
-//     ];
-
-//     // this option prevents additional documents from being inserted if one fails
-//     const options = { ordered: true };
-
-//     const result = await collection.insertMany(docs, options);
-//     console.log(`${result.insertedCount} documents were inserted`);
-// 	  return result;
-//   } catch(e) {
-// 	console.log("Pas d'users inséré")
-// 	console.log(e);
-// 	throw e;
-//   }
-// }
-
-// async function updateOne(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-
-//     // create a filter for a movie to update
-//     const filter = { name: "Ramm" };
-
-//     // this option instructs the method to create a document if no documents match the filter
-//     const options = { upsert: true };
-
-//     // create a document that sets the plot of the movie
-//     const updateDoc = {
-//       $set: {
-//         name: "Rammstein"
-//       },
-//     };
-
-//     const result = await collection.updateOne(filter, updateDoc, options);
-//     console.log(
-//       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
-//     );
-// 	return result;
-//   } catch(e) {
-// 	console.log("Pas d'users updaté")
-// 	console.log(e);
-// 	throw e;
-//   }
-// }
-
-// async function updateMany(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-
-//     // create a filter to update all movies with a 'G' rating
-//     const filter = { name: "Flo" };
-
-//     // increment every document matching the filter with 2 more comments
-//     const updateDoc = {
-//       $set: {
-//         name: "Florian"
-//       },
-//     };
-//     const result = await collection.updateMany(filter, updateDoc);
-//     console.log(`Updated ${result.modifiedCount} documents`);
-// 	return result;
-//   } catch(e) {
-// 	console.log("Pas tout les users updatés")
-// 	console.log(e);
-// 	throw e;
-//   }
-// }
-
-// async function replace(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-
-//     // create a query for a movie to update
-//     const query = { name: "Florian" };
-//     // create a new document that will be used to replace the existing document
-//     const replacement = {
-//       name: "Till"
-//     };
-
-//     const result = await collection.replaceOne(query, replacement);
-//     console.log(`Modified ${result.modifiedCount} document(s)`);
-// 	return result;
-//   } catch(e) {
-// 	console.log("Pas de replace")
-// 	console.log(e);
-// 	throw e;
-//   }
-// }
-
-// async function deleteOne(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-
-//     // Query for a movie that has title "Annie Hall"
-//     const query = { name: "Till" };
-
-//     const result = await collection.deleteOne(query);
-//     if (result.deletedCount === 1) {
-//       console.log("Successfully deleted one document.");
-//     } else {
-//       console.log("No documents matched the query. Deleted 0 documents.");
-//     }
-// 	return result;
-//   } catch(e) {
-// 	console.log("La personne n'est pas effacée")
-// 	console.log(e);
-// 	throw e;
-//   }
-// }
-
-// async function deleteMany(collectionName) {
-//   try {
-//     const collection = getCollection(collectionName);
-
-//     // Query for all movies with a title containing the string "Santa"
-//     const query = { name: "Florian" };
-
-//     const result = await collection.deleteMany(query);
-//     console.log("Deleted " + result.deletedCount + " documents");
-// 	return result;
-//   } catch(e) {
-// 	console.log("Les personnes ne sont pas effacées")
-// 	console.log(e);
-// 	throw e;
-//   }
-// }
 
 module.exports = {
     insertClient,
