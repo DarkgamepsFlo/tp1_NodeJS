@@ -14,7 +14,7 @@ html
         input(name='apikey', value='', type='text')              
       input(value='Submit', type='submit')
 
-    h3 Pour ajouter un film dans une WatchList :
+    h3 Pour ajouter un film dans une WatchList (Petit problème avec Malcom ('et' commercial) Malvin) :
     form(action='/movies/insertItem', method='POST', role='form')
       p 
         | Entrez le nom de la watchList :
@@ -71,6 +71,49 @@ html
         | Entrez le nom d'un film :
         input(name='titre', value='', type='text')         
       input(value='Submit', type='submit')
+
+    h3 Pour supprimer une watchList :
+    form(action='/movies/deleteWatchList', method='POST', role='form')
+      p 
+        | Entrez le nom d'une watchList :
+        input(name='id_utilisateur', value='', type='text')           
+      input(value='Submit', type='submit')
+
+    h3 Pour ajouter une watchList en favori :
+    form(action='/movies/addFavori', method='POST', role='form')
+      p 
+        | Entrez le nom d'une watchList :
+        input(name='id_utilisateur', value='', type='text')           
+      input(value='Submit', type='submit')
+
+    h3 Pour partager une WatchList avec un autre utilisateur :
+    form(action='/movies/partageWatch', method='POST', role='form')
+      p 
+        | Entrez le nom de la watchList :
+        input(name='id_utilisateur', value='', type='text')  
+        br
+        | Entrez le nom de la personne qui va avoir cette watchList : 
+        input(name='name', value='', type='text')              
+      input(value='Submit', type='submit')
+
+    h3 Pour commenter un film ou une watchList :
+    form(action='/movies/addDescription', method='POST', role='form')
+      p 
+        | Entrez le nom de la watchList :
+        input(name='id_utilisateur', value='', type='text')  
+        br
+        | Entrez le nom du film dans la watchList (Laissez vide si on commente la watchList) : 
+        input(name='Title', value='', type='text')       
+        br
+        | Entrez le contenu de la description : 
+        input(name='content', value='', type='text')          
+      input(value='Submit', type='submit')
+
+    h2
+      | Pour retourner au Menu principal : 
+      a(href='http://localhost:3000') Menu
+
+    
 
 
 

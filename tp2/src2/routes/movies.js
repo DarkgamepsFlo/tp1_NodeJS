@@ -16,11 +16,13 @@ router.get("/findWatch", findWatchlist);
 router.get("/findFilm", findWatchFilm);
 // 10 //
 router.post("/deleteItem", deleteOneFilm);
-
+// 12 //
 router.post("/deleteWatchList", deleteWatchList);
-
+// 13 //
 router.post("/addFavori", watchlistFavori);
+// 14 //
 router.post("/partageWatch", partageWatchList);
+// 15 //
 router.post("/addDescription", ajoutDescr)
 
 module.exports = router;

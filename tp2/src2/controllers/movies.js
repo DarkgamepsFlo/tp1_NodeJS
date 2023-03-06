@@ -92,10 +92,13 @@ async function deleteOneFilm(req, res, next) {
   }
 }
 
+// 12 //
+// Cette fonction permet d'appeler la fonction deleteWatchlist lorsqu'on se situe sur la bonne URL
 async function deleteWatchList(req, res, next) {
-  const name = req.query.nom
-  if(!name)
-  return res.send("Veuillez choisir une WatchList à supprimer");
+  const name = req.body
+  // Si la case est vide, on va demander d'insérer le nom d'une watchList
+  if(!name.id_utilisateur)
+  return res.send("<h1>Veuillez choisir une WatchList à supprimer</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
   try{
     const result = await deleteWatchlist('watchlist', name);
     return res.send(result);
@@ -104,7 +107,8 @@ async function deleteWatchList(req, res, next) {
   }
 }
 
-
+// 13 //
+// Cette fonction permet d'appeler la fonction addFavori lorsqu'on se situe sur la bonne URL
 async function watchlistFavori(req, res, next) {
   const body = req.body
   try{
@@ -115,6 +119,8 @@ async function watchlistFavori(req, res, next) {
   }
 }
 
+// 14 //
+// Cette fonction permet d'appeler la fonction partageWatchlist lorsqu'on se situe sur la bonne URL
 async function partageWatchList(req, res, next) {
   const body = req.body
   try{
@@ -125,8 +131,10 @@ async function partageWatchList(req, res, next) {
   }
 }
 
+// 15 //
+// Cette fonction permet d'appeler la fonction ajoutDescription lorsqu'on se situe sur la bonne URL
 async function ajoutDescr(req, res, next) {
-  const body = req.body
+  const body = req.body;
   try{
     const result = await ajoutDescription('watchlist', body);
     return res.send(result);
@@ -134,16 +142,6 @@ async function ajoutDescr(req, res, next) {
     console.log(e);
   }
 }
-
-// Exemple ///////////////////////////////////////////////////////////
-// async function findUser(req, res, next){
-//   try{
-//     const result = await findOne('users', {name: 'toto'});
-//     return res.send(result);
-//   }catch(e){
-//     console.log(e);
-//   }
-// }
 
 module.exports = {
   insertOneMovies,
