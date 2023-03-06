@@ -57,7 +57,7 @@ async function findWatchlist(req, res, next) {
   const name = req.query.name
   // Si le nom est absant, on va demander de saisir un nom d'utilisateur
   if(!name)
-  return res.send("<h1>Veuillez saisir un nom d'utilisateur</h1>");
+  return res.send("<h1>Veuillez saisir un nom d'utilisateur</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
   try{
     const result = await findWatchList('users', name);
     return res.send(result);
@@ -71,7 +71,7 @@ async function findWatchlist(req, res, next) {
 async function findWatchFilm(req, res, next) {
   const name = req.query.id_utilisateur
   if(!name)
-  return res.send("Veuillez saisir un nom de watchList");
+  return res.send("<h1>Veuillez saisir un nom de watchList</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
   try{
     const result = await findFilm('watchlist', name);
     return res.send(result);

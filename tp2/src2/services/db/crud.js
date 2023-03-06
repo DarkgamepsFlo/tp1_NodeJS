@@ -49,29 +49,35 @@ async function insertMovies(collectionName, doc) {
 // Cette fonction va permettre de créer une watchlist pour un utilisateur
 async function createWatchList(collectionName, filter) {
   try {
-    // On récupère les données de la tablre passé en paramètre
-    const collection = getCollection(collectionName);
+    // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
+    if(filter.name == "")
+      return ("<h1>Veuillez renseigner le nom de l'utilisateur</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
+    else{
+      // On récupère les données de la table passé en paramètre
+      const collection = getCollection(collectionName);
 
-    // this option instructs the method to create a document if no documents match the filter
-    const options = { upsert: true };
-
-    // create a document that sets the plot of the movie
-    const updateDoc = {
-      $set: {
-        watchlist: []
-      },
-    };
-
-    // On va ajouter une variable watchlist de type Array pour l'utilisateur choisi
-    const result = await collection.updateOne(filter, updateDoc, options);
-
-    // On va ajouter une nouvelle watchList dans la table watchList
-    insertWatchlist("watchlist", filter.name);
-
-    console.log(
-      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
-    );
-	  return ("<h1>La watchList est bien ajouté à l'utilisateur</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
+      // this option instructs the method to create a document if no documents match the filter
+      const options = { upsert: false };
+  
+      // create a document that sets the plot of the movie
+      const updateDoc = {
+        $set: {
+          name : filter.name,
+          watchlist: []
+        },
+      };
+  
+      // On va ajouter une variable watchlist de type Array pour l'utilisateur choisi
+      const result = await collection.updateOne(filter, updateDoc, options);
+  
+      // On va ajouter une nouvelle watchList dans la table watchList
+      insertWatchlist("watchlist", filter.name);
+  
+      console.log(
+        `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
+      );
+      return ("<h1>La watchList est bien ajouté à l'utilisateur</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
+    }
   } catch(e) {
 	console.log("Pas d'users updaté")
 	console.log(e);
@@ -108,63 +114,68 @@ async function insertWatchlist(collectionName, pseudo) {
 // Cette fonction permet d'ajouter un film dans une WatchList !! Il faut que le client ainsi que l'attribut watchLlist existe au préalable
 async function insertItem(collectionName, filter, options = {}) {
   try {
-    // On récupère l'ensemble des éléments de la base de données
-    const collection = getCollection(collectionName);
-    const collection2 = getCollection('movies');
-    const collection3 = getCollection('users');
-
-    const options = { upsert: false };
-
-    // Les variables search, search2, search3 vont permettre de trouver les éléments qu'il nous faut
-    const search = {
-      name: filter.id_utilisateur
-    };
-
-    const search2 = {
-      id_utilisateur: filter.id_utilisateur
+    // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
+    if(filter.id_utilisateur == "" || filter.Title == ""){
+      return ("<h1>Veuillez renseigner les informations pour pouvoir insérer un film</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
     }
+    else{
+      // On récupère l'ensemble des éléments de la base de données
+      const collection = getCollection(collectionName);
+      const collection2 = getCollection('movies');
+      const collection3 = getCollection('users');
 
-    const search3 = {
-      Title: filter.Title
-    }
+      const options = { upsert: false };
 
-    // Je récupère les infos du film, de la watchlist et de l'utilisateur possèdant cette watchList
-    const result3 = await collection.findOne(search2, options);
-		const result = await collection2.findOne(search3, options);
-    const result2 = await collection3.findOne(search, options);
+      // Les variables search, search2, search3 vont permettre de trouver les éléments qu'il nous faut
+      const search = {
+        name: filter.id_utilisateur
+      };
 
-    console.log(result2)
-		
-    // J'ajoute le film dans la watchlist de l'utilisateur
-    const newList = result2.watchlist;
-    newList.push(filter.Title);
+      const search2 = {
+        id_utilisateur: filter.id_utilisateur
+      }
 
-    // create a document that sets the plot of the movie
-    const updateDoc = {
-      $set: {
-        watchlist: newList
-      },
-    };
+      const search3 = {
+        Title: filter.Title
+      }
 
-    collection3.updateOne(search, updateDoc, options);
+      // Je récupère les infos du film, de la watchlist et de l'utilisateur possèdant cette watchList
+      const result3 = await collection.findOne(search2, options);
+      const result = await collection2.findOne(search3, options);
+      const result2 = await collection3.findOne(search, options);
 
-    // J'ajoute les informations du film dans la watchList correspondant à celle de l'utilisateur
-    const newitem = result3.film;
-    newitem.push([result.Title, result.Year, result.Type, "A voir"]);
+      console.log(result2)
+
+      // J'ajoute le film dans la watchlist de l'utilisateur
+      const newList = result2.watchlist;
+      newList.push(filter.Title);
+
+      // create a document that sets the plot of the movie
+      const updateDoc = {
+        $set: {
+          watchlist: newList
+        },
+      };
+
+      collection3.updateOne(search, updateDoc, options);
+
+      // J'ajoute les informations du film dans la watchList correspondant à celle de l'utilisateur
+      const newitem = result3.film;
+      newitem.push([result.Title, result.Year, result.Type, "A voir"]);
 
 
-    // create a document that sets the plot of the movie
-    const updateItem = {
-      $set: {
-        film: newitem
-      },
-    };
+      // create a document that sets the plot of the movie
+      const updateItem = {
+        $set: {
+          film: newitem
+        },
+      };
 
-    collection.updateOne(search2, updateItem, options);
+      collection.updateOne(search2, updateItem, options);
 
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
-    return ("<h1>Le film est bien inséré dans la Watchlist</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
-
+      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+      return ("<h1>Le film est bien inséré dans la Watchlist</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
+          }
   } catch(e) {
 	console.log("L'item n'a pas pu être inséré")
 	console.log(e);
@@ -176,42 +187,44 @@ async function insertItem(collectionName, filter, options = {}) {
 // Cette fonction va permettre de modifier le status d'un film se trouvant dans une WatchList (Il est de base égal à "à voir")
 async function updateStatus(collectionName, body) {
   try {
-    // On récupère les élements de la table watchList
-    const collection = getCollection(collectionName);
-    
-    console.log(body)
+    // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
+    if(body.id_utilisateur == "" || body.titlefilm == "")
+      return ("<h1>Veuillez renseigner les informations pour pouvoir changer le status du film</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
+    else{
+      // On récupère les élements de la table watchList
+      const collection = getCollection(collectionName);
 
-    const search = {
-      id_utilisateur: body.id_utilisateur
-    }
-
-    // this option instructs the method to create a document if no documents match the filter
-    const options = { upsert: true };
-    
-    // On récupère la liste de film se trouvant dans la watList
-    const result = await collection.findOne(search, options);
-    console.log(result);
-    const film = result.film;
-
-    // Pour chaque film, si le film possède le même titre que celui qu'on veut modifier.
-    // Si oui, on va mondifier son status par celui qu'on veut mettre
-    for (var i = 0; i < film.length; i++){
-      if (film[i][0] == body.titlefilm){
-        film[i][3] = body.status
+      const search = {
+        id_utilisateur: body.id_utilisateur
       }
+
+      // this option instructs the method to create a document if no documents match the filter
+      const options = { upsert: true };
+      
+      // On récupère la liste de film se trouvant dans la watList
+      const result = await collection.findOne(search, options);
+      console.log(result);
+      const film = result.film;
+
+      // Pour chaque film, si le film possède le même titre que celui qu'on veut modifier.
+      // Si oui, on va mondifier son status par celui qu'on veut mettre
+      for (var i = 0; i < film.length; i++){
+        if (film[i][0] == body.titlefilm){
+          film[i][3] = body.status
+        }
+      }
+
+      const updateItem = {
+        $set: {
+          film: film
+        },
+      };
+
+      // On va modifier le film dans la watchList en le remplacant par le même film avec un nouveau status
+      collection.updateOne(search, updateItem, options);
+
+      return ("<h1>Le status est bien modifié</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
     }
-
-    const updateItem = {
-      $set: {
-        film: film
-      },
-    };
-
-    // On va modifier le film dans la watchList en le remplacant par le même film avec un nouveau status
-    collection.updateOne(search, updateItem, options);
-
-	  return ("<h1>Le status est bien modifié</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
-
   } catch(e) {
 	console.log("Pas d'users updaté")
 	console.log(e);
@@ -226,10 +239,8 @@ async function findItem(collectionName, filter) {
     const collection = getCollection(collectionName);
 
     // Si le nom est égal à "_", alors on va récupétrer l'ensemble des éléments
-    if(filter == "_"){
-      console.log("Il n'y a pas de nom de film")
+    if(filter == "_")
       var query = { };
-    }
     else  
       var query = { Title: filter };
       
@@ -342,62 +353,65 @@ async function findFilm(collectionName, nomWatchList) {
 // Cette fonction permet de supprimer un item d'une watchList
 async function deleteItem(collectionName, filter, options = {}) {
   try {
-    // On récupère l'ensemble des éléments de chaque tables
-    const collection = getCollection(collectionName);
-    const collection2 = getCollection('movies');
-    const collection3 = getCollection('users');
+    if(filter.id_utilisateur == "" || filter.titre == "")
+      return ("<h1>Veuillez renseigner les informations pour pouvoir supprimer un film</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
+    else{
+      // On récupère l'ensemble des éléments de chaque tables
+      const collection = getCollection(collectionName);
+      const collection2 = getCollection('movies');
+      const collection3 = getCollection('users');
 
-    const options = { upsert: false };
+      const options = { upsert: false };
 
-    const search = {
-      name: filter.id_utilisateur
-    };
+      const search = {
+        name: filter.id_utilisateur
+      };
 
-    const search2 = {
-      id_utilisateur: filter.id_utilisateur
-    };
+      const search2 = {
+        id_utilisateur: filter.id_utilisateur
+      };
 
-    const search3 = {
-      Title: filter.titre
-    };
+      const search3 = {
+        Title: filter.titre
+      };
 
-    // Je récupère les infos du film et de l'utilsateur ayant la watchList 
-    // Infos sur la watchList (qui contient l'ensemble des films)
-    const result3 = await collection.findOne(search2, options);
-    // Infos sur le film (l'item) qu'on veut supprimer
-		const result = await collection2.findOne(search3, options);
-    // Infos sur l'utilisateur possédant la watchList
-    const result2 = await collection3.findOne(search, options);
-		
-    // J'ajoute le film dans le watchlist client
-    const newList = result2.watchlist;
-    newList.splice(filter.titre, 1);
+      // Je récupère les infos du film et de l'utilsateur ayant la watchList 
+      // Infos sur la watchList (qui contient l'ensemble des films)
+      const result3 = await collection.findOne(search2, options);
+      // Infos sur le film (l'item) qu'on veut supprimer
+      const result = await collection2.findOne(search3, options);
+      // Infos sur l'utilisateur possédant la watchList
+      const result2 = await collection3.findOne(search, options);
 
-    // create a document that sets the plot of the movie
-    const updateDoc = {
-      $set: {
-        watchlist: newList
-      },
-    };
+      // J'ajoute le film dans le watchlist client
+      const newList = result2.watchlist;
+      newList.splice(filter.titre, 1);
 
-    collection3.updateOne(search, updateDoc, options);
+      // create a document that sets the plot of the movie
+      const updateDoc = {
+        $set: {
+          watchlist: newList
+        },
+      };
 
-    // J'ajoute les informations du film dans le watchList
-    const newitem = result3.film;
-    newitem.splice([result.Title, result.Year, result.Type], 1);
+      collection3.updateOne(search, updateDoc, options);
 
-    // create a document that sets the plot of the movie
-    const updateItem = {
-      $set: {
-        film: newitem
-      },
-    };
+      // J'ajoute les informations du film dans le watchList
+      const newitem = result3.film;
+      newitem.splice([result.Title, result.Year, result.Type], 1);
 
-    collection.updateOne(search2, updateItem, options);
+      // create a document that sets the plot of the movie
+      const updateItem = {
+        $set: {
+          film: newitem
+        },
+      };
 
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
-    return "<h1>L'Item est bien supprimé de la watchList</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>"
+      collection.updateOne(search2, updateItem, options);
 
+      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+      return "<h1>L'Item est bien supprimé de la watchList</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>"
+    }
   } catch(e) {
 	console.log("L'item n'a pas pu être inséré")
 	console.log(e);
@@ -492,6 +506,8 @@ async function deleteWatchlist(collectionName, item) {
 // Cette fonction permet de mettre une WatchList en favori
 async function addFavori(collectionName, filter, options = {}) {
   try {
+    if(filter.id_utilisateur == "")
+      return "<h1>Veuillez préciser la watchList à mettre en favori</h1><p>Pour choisir des paramètre de mdifiation : <a href='http://localhost:3000/movies'>Page précédente</a></p>";
     const collection = getCollection(collectionName);
 
     const options = { upsert: false };
@@ -525,50 +541,53 @@ async function addFavori(collectionName, filter, options = {}) {
 // Cette fonction permet de partager une WatchList avec une autre personne
 async function partageWatchlist(collectionName, filter, options = {}) {
   try {
-    // On va récupérer l'ensemble des informations des users et des watchLists
-    const collection = getCollection(collectionName);
-    const collection2 = getCollection('users');
+    if(filter.id_utilisateur == "" || filter.name == "")
+      return "<h1>Veuillez préciser la watchList qui va partager et l'utilisateur qui va reçevoir</h1><p>Pour choisir des paramètre de mdifiation : <a href='http://localhost:3000/movies'>Page précédente</a></p>";
+    else{
+      // On va récupérer l'ensemble des informations des users et des watchLists
+      const collection = getCollection(collectionName);
+      const collection2 = getCollection('users');
 
-    const options = { upsert: false };
+      const options = { upsert: false };
 
-    const search = {
-        name: filter.name
+      const search = {
+          name: filter.name
+      }
+
+      const search2 = {
+        id_utilisateur: filter.id_utilisateur
+      }
+
+      // Je récupère les infos du film et de l'utilsateur ayant la watchList
+      // Infos sur la watchList (qui contient l'ensemble des films)
+      const result3 = await collection.findOne(search2, options);
+      // Infos sur l'utilisateur possédant la watchList
+      const result4 = await collection2.findOne({name : filter.id_utilisateur}, options);
+      // sur l'utilisateur qui va avoir la copie partagé
+      const result2 = await collection2.findOne(search, options);
+
+      // On modifie le nom de la variable pour pouvoir l'insérer
+      const variable = "watchlist"+filter.id_utilisateur;
+      // create a document that sets the plot of the movie
+      const updateDoc = {
+        $set: {
+          [variable]: result4.watchlist
+        },
+      };
+
+      // Permet de rajouter la watchlist dans la base de donnée de cette personne
+      await collection2.updateOne(search, updateDoc, options);
+
+      var element = {
+        id_utilisateur: result3.id_utilisateur+filter.name,
+        film: result3.film
+      }
+
+      // create a document to insert
+      const result = await collection.insertOne(element);
+
+      return "<h1>Le partage est effectué</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
     }
-
-    const search2 = {
-      id_utilisateur: filter.id_utilisateur
-  }
-
-    // Je récupère les infos du film et de l'utilsateur ayant la watchList
-    // Infos sur la watchList (qui contient l'ensemble des films)
-    const result3 = await collection.findOne(search2, options);
-    // Infos sur l'utilisateur possédant la watchList
-    const result4 = await collection2.findOne({name : filter.id_utilisateur}, options);
-    // sur l'utilisateur qui va avoir la copie partagé
-    const result2 = await collection2.findOne(search, options);
-    
-    // On modifie le nom de la variable pour pouvoir l'insérer
-    const variable = "watchlist"+filter.id_utilisateur;
-    // create a document that sets the plot of the movie
-    const updateDoc = {
-      $set: {
-        [variable]: result4.watchlist
-      },
-    };
-
-    // Permet de rajouter la watchlist dans la base de donnée de cette personne
-    await collection2.updateOne(search, updateDoc, options);
-
-    var element = {
-      id_utilisateur: result3.id_utilisateur+filter.name,
-      film: result3.film
-    }
-
-    // create a document to insert
-    const result = await collection.insertOne(element);
-
-    return "<h1>Le partage est effectué</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
-    
   } catch(e) {
 	console.log("L'item n'a pas pu être inséré")
 	console.log(e);
