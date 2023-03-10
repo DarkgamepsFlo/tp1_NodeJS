@@ -1,0 +1,242 @@
+{
+    "smartphones": [
+        { "libelle": "iPhone 9", "dispo": "hight"
+        },
+        { "libelle": "iPhone X", "dispo": "medium"
+        },
+        { "libelle": "Samsung Universe 9", "dispo": "medium"
+        },
+        { "libelle": "OPPOF19", "dispo": "hight"
+        },
+        { "libelle": "Huawei P30", "dispo": "medium"
+        }
+    ],
+    "laptops": [
+        { "libelle": "MacBook Pro", "dispo": "hight"
+        },
+        { "libelle": "Samsung Galaxy Book", "dispo": "hight"
+        },
+        { "libelle": "Microsoft Surface Laptop 4", "dispo": "hight"
+        },
+        { "libelle": "Infinix INBOOK", "dispo": "hight"
+        },
+        { "libelle": "HP Pavilion 15-DK1056WM", "dispo": "hight"
+        }
+    ],
+    "fragrances": [
+        { "libelle": "perfume Oil", "dispo": "hight"
+        },
+        { "libelle": "Brown Perfume", "dispo": "hight"
+        },
+        { "libelle": "Fog Scent Xpressio Perfume", "dispo": "hight"
+        },
+        { "libelle": "Non-Alcoholic Concentrated Perfume Oil", "dispo": "hight"
+        },
+        { "libelle": "Eau De Perfume Spray", "dispo": "hight"
+        }
+    ],
+    "skincare": [
+        { "libelle": "Hyaluronic Acid Serum", "dispo": "hight"
+        },
+        { "libelle": "Tree Oil 30ml", "dispo": "hight"
+        },
+        { "libelle": "Oil Free Moisturizer 100ml", "dispo": "hight"
+        },
+        { "libelle": "Skin Beauty Serum.", "dispo": "hight"
+        },
+        { "libelle": "Freckle Treatment Cream- 15gm", "dispo": "hight"
+        }
+    ],
+    "groceries": [
+        { "libelle": "- Daal Masoor 500 grams", "dispo": "hight"
+        },
+        { "libelle": "Elbow Macaroni - 400 gm", "dispo": "hight"
+        },
+        { "libelle": "Orange Essence Food Flavou", "dispo": "medium"
+        },
+        { "libelle": "cereals muesli fruit nuts", "dispo": "hight"
+        },
+        { "libelle": "Gulab Powder 50 Gram", "dispo": "medium"
+        }
+    ],
+    "home-decoration": [
+        { "libelle": "Plant Hanger For Home", "dispo": "hight"
+        },
+        { "libelle": "Flying Wooden Bird", "dispo": "medium"
+        },
+        { "libelle": "3D Embellishment Art Lamp", "dispo": "hight"
+        },
+        { "libelle": "Handcraft Chinese style", "dispo": "low"
+        },
+        { "libelle": "Key Holder", "dispo": "hight"
+        }
+    ],
+    "furniture": [
+        { "libelle": "Mornadi Velvet Bed", "dispo": "hight"
+        },
+        { "libelle": "Sofa for Coffe Cafe", "dispo": "medium"
+        },
+        { "libelle": "3 Tier Corner Shelves", "dispo": "hight"
+        },
+        { "libelle": "Plastic Table", "dispo": "hight"
+        },
+        { "libelle": "3 DOOR PORTABLE", "dispo": "hight"
+        }
+    ],
+    "tops": [
+        { "libelle": "Sleeve Shirt Womens", "dispo": "medium"
+        },
+        { "libelle": "ank Tops for Womens/Girls", "dispo": "hight"
+        },
+        { "libelle": "sublimation plain kids tank", "dispo": "medium"
+        },
+        { "libelle": "Women Sweaters Wool", "dispo": "hight"
+        },
+        { "libelle": "women winter clothes", "dispo": "hight"
+        }
+    ],
+    "womens-dresses": [
+        { "libelle": "NIGHT SUIT", "dispo": "medium"
+        },
+        { "libelle": "Stiched Kurta plus trouser", "dispo": "hight"
+        },
+        { "libelle": "frock gold printed", "dispo": "hight"
+        },
+        { "libelle": "Ladies Multicolored Dress", "dispo": "low"
+        },
+        { "libelle": "Malai Maxi Dress", "dispo": "hight"
+        }
+    ],
+    "womens-shoes": [
+        { "libelle": "women's shoes", "dispo": "hight"
+        },
+        { "libelle": "Sneaker shoes", "dispo": "hight"
+        },
+        { "libelle": "Women Strip Heel", "dispo": "medium"
+        },
+        { "libelle": "Chappals & Shoe Ladies Metallic", "dispo": "hight"
+        },
+        { "libelle": "Women Shoes", "dispo": "medium"
+        }
+    ],
+    "mens-shirts": [
+        { "libelle": "half sleeves T shirts", "dispo": "hight"
+        },
+        { "libelle": "FREE FIRE T Shirt", "dispo": "hight"
+        },
+        { "libelle": "printed high quality T shirts", "dispo": "low"
+        },
+        { "libelle": "Pubg Printed Graphic T-Shirt", "dispo": "hight"
+        },
+        { "libelle": "Money Heist Printed Summer T Shirts", "dispo": "hight"
+        }
+    ],
+    "mens-shoes": [
+        { "libelle": "Sneakers Joggers Shoes", "dispo": "low"
+        },
+        { "libelle": "Loafers for men", "dispo": "medium"
+        },
+        { "libelle": "formal offices shoes", "dispo": "hight"
+        },
+        { "libelle": "Spring and summershoes", "dispo": "hight"
+        },
+        { "libelle": "Stylish Casual Jeans Shoes", "dispo": "hight"
+        }
+    ],
+    "mens-watches": [
+        { "libelle": "Leather Straps Wristwatch", "dispo": "hight"
+        },
+        { "libelle": "Waterproof Leather Brand Watch", "dispo": "hight"
+        },
+        { "libelle": "Royal Blue Premium Watch", "dispo": "hight"
+        },
+        { "libelle": "Leather Strap Skeleton Watch", "dispo": "hight"
+        },
+        { "libelle": "Stainless Steel Wrist Watch", "dispo": "hight"
+        }
+    ],
+    "womens-watches": [
+        { "libelle": "Steel Analog Couple Watches", "dispo": "medium"
+        },
+        { "libelle": "Fashion Magnetic Wrist Watch", "dispo": "medium"
+        },
+        { "libelle": "Stylish Luxury Digital Watch", "dispo": "hight"
+        },
+        { "libelle": "Golden Watch Pearls Bracelet Watch", "dispo": "hight"
+        },
+        { "libelle": "Stainless Steel Women", "dispo": "hight"
+        }
+    ],
+    "womens-bags": [
+        { "libelle": "Women Shoulder Bags", "dispo": "medium"
+        },
+        { "libelle": "Handbag For Girls", "dispo": "medium"
+        },
+        { "libelle": "Fancy hand clutch", "dispo": "hight"
+        },
+        { "libelle": "Leather Hand Bag", "dispo": "medium"
+        },
+        { "libelle": "Seven Pocket Women Bag", "dispo": "medium"
+        }
+    ],
+    "womens-jewellery": [
+        { "libelle": "Silver Ring Set Women", "dispo": "hight"
+        },
+        { "libelle": "Rose Ring", "dispo": "hight"
+        },
+        { "libelle": "Rhinestone Korean Style Open Rings", "dispo": "low"
+        },
+        { "libelle": "Elegant Female Pearl Earrings", "dispo": "medium"
+        },
+        { "libelle": "Chain Pin Tassel Earrings", "dispo": "low"
+        }
+    ],
+    "sunglasses": [
+        { "libelle": "Round Silver Frame Sun Glasses", "dispo": "hight"
+        },
+        { "libelle": "Kabir Singh Square Sunglass", "dispo": "hight"
+        },
+        { "libelle": "Wiley X Night Vision Yellow Glasses", "dispo": "hight"
+        },
+        { "libelle": "Square Sunglasses", "dispo": "hight"
+        },
+        { "libelle": "LouisWill Men Sunglasses", "dispo": "hight"
+        }
+    ],
+    "automotive": [
+        { "libelle": "Bluetooth Aux", "dispo": "medium"
+        },
+        { "libelle": "t Temperature Controller Incubator Controller", "dispo": "medium"
+        },
+        { "libelle": "TC Reusable Silicone Magic Washing Gloves", "dispo": "medium"
+        },
+        { "libelle": "Qualcomm original Car Charger", "dispo": "hight"
+        },
+        { "libelle": "Cycle Bike Glow", "dispo": "hight"
+        }
+    ],
+    "motorcycle": [
+        { "libelle": "Black Motorbike", "dispo": "hight"
+        },
+        { "libelle": "HOT SALE IN EUROPE electric racing motorcycle", "dispo": "medium"
+        },
+        { "libelle": "Automatic Motor Gas Motorcycles", "dispo": "hight"
+        },
+        { "libelle": "new arrivals Fashion motocross goggles", "dispo": "hight"
+        },
+        { "libelle": "Wholesale cargo lashing Belt", "dispo": "hight"
+        }
+        ],
+    "lighting": [
+        { "libelle": "lighting ceiling kitchen", "dispo": "hight"
+        },
+        { "libelle": "Metal Ceramic Flower", "dispo": "hight"
+        },
+        { "libelle": "3 lights lndenpant kitchen islang", "dispo": "medium"
+        },
+        { "libelle": "American Vintage Wood Pendant Light", "dispo": "hight"
+        },
+        { "libelle": "Crystal chandelier maria theresa for 12 light", "dispo": "hight"
+        }
+        ]
+    }
