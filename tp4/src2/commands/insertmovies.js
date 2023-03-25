@@ -37,5 +37,3 @@ module.exports = {
         });
     }
 }
-
-// !!! Il semble que ça marche mais pourtant le film n'est pas dans la base de données
