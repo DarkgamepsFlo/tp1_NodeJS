@@ -1,6 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function updateusers Cette commande permet de modifier les informations d'un utilisateur
+ * @param {string} nom_ancien Il contient le nom de l'utilisateur
+ * @param {string} nom_nouveau Il contient le nouveau prénom de l'utilisateur (ou _ si on ne veut pas le modifier)
+ * @param {string} year_nouveau Il contient le nouvel age de l'utilisateur (ou _ si on ne veut pas le modifier)
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que les infos de l'utilisateur sont bien modifié dans la base de données
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('updateusers')
@@ -36,7 +43,7 @@ module.exports = {
 
         axios.request(options).then(function () {
     
-            interaction.reply("L'user' : " + nom_ancien + " est bien modifé")
+            interaction.reply("L'user' '" + nom_ancien + "' est bien modifé")
         
         }).catch(function (error) {
             console.error(error);

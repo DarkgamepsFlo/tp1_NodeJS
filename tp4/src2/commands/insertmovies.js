@@ -1,10 +1,17 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function insertmovies Cette commande permet d'insérer un film dans la base de données
+ * @param {string} s Il contient le nom du film
+ * @param {string} apikey Il contient le numéro de la clé de tmdb
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que le film est bien ajouté dans la base de données
+ */
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('insertmovies')
-        .setDescription('Permet d\'ajouter un film dans la base de données')
+        .setDescription('Cette commande permet d\'ajouter un film dans la base de données')
         .addStringOption(option =>
             option.setName('s')
                 .setDescription("Permet de prendre le nom du film à ajouter")
@@ -30,7 +37,7 @@ module.exports = {
 
         axios.request(options).then(function () {
     
-            interaction.reply("Le film : " + s + " est bien ajouté dans la base de donnée")
+            interaction.reply("Le film '" + s + "' est bien ajouté dans la base de donnée")
         
         }).catch(function (error) {
             console.error(error);

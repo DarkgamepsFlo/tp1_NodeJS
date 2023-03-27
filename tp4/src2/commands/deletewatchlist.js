@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function deletewatchlist Cette commande permet de supprimer une watchlist de la base de données
+ * @param {string} id_utilisateur Il contient le nom de la watchList à supprimer
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que la watchlist est bien supprimé
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('deletewatchlist')
@@ -24,7 +29,7 @@ module.exports = {
 
         axios.request(options).then(function () {
     
-            interaction.reply("La watchList : " + id_utilisateur + " est bien supprimée de la base de données")
+            interaction.reply("La watchList '" + id_utilisateur + "' est bien supprimée de la base de données")
         
         }).catch(function (error) {
             console.error(error);

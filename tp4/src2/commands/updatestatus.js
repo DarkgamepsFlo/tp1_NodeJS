@@ -1,6 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function updatestatus Cette commande permet de modifier le status d'un film
+ * @param {string} id_utilisateur Il contient le nom de la watchList
+ * @param {string} titlefilm Il contient le nom du film
+ * @param {string} status Il contient le nouveau status à indiquer
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que le status est bien modifié
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('updatestatus')
@@ -38,7 +45,7 @@ module.exports = {
 
         axios.request(options).then(function () {
     
-            interaction.reply("Le film : " + titlefilm + " dans la watchList : " + id_utilisateur + " a comme nouveau status : " + status)
+            interaction.reply("Le film '" + titlefilm + "' dans la watchList '" + id_utilisateur + "' a comme nouveau status '" + status + "'")
         
         }).catch(function (error) {
             console.error(error);

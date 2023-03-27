@@ -1,6 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function finduser Cette commande permet de trouver l'ensemble des utilisateurs de la base de données
+ * @returns Une phrase permettant d'indiquer l'ensemble des utilisateurs de la base de données
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('finduser')
@@ -18,7 +22,7 @@ module.exports = {
             console.log(response.data)
     
             response.data.forEach(element => {
-                result += "L'user : " + element['name'] + " est présent dans la base de données\n"                 
+                result += "L'user '" + element['name'] + "' est présent dans la base de données\n"                 
             });
 
             interaction.reply(result)
@@ -28,5 +32,3 @@ module.exports = {
         });
     }
 }
-
-// Modifier pour l'orsqu'on ne met rien, on a tout les films

@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function finditem Cette commande permet de trouver un film dans la base de données
+ * @param {string} title Il contient le nom du film
+ * @returns Une phrase permettant d'indiquer l'ensemble des informations du film s'il est présent dans la base de données
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('finditem')
@@ -33,7 +38,7 @@ module.exports = {
     
             response.data.forEach(element => {
                 if(element['Title'] == title)
-                    result = "Le film : " + element['Title'] + " de " + element['Year'] + " est dans la liste de film"                 
+                    result = "Le film '" + element['Title'] + "' de '" + element['Year'] + "' est dans la liste de film"                 
             });
 
             if(result == "")

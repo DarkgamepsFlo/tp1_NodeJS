@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function createwatchlist Cette commande permet d'insérer une watchlist à un utilisateur
+ * @param {string} name Il contient le nom du film à ajouter
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que la watchlist est bien ajouté à l'utilisateur
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('createwatchlist')
@@ -24,7 +29,7 @@ module.exports = {
 
         axios.request(options).then(function () {
     
-            interaction.reply("L'user : " + name + " possède maintenant une watchList")
+            interaction.reply("L'user '" + name + "' possède maintenant une watchList")
         
         }).catch(function (error) {
             console.error(error);

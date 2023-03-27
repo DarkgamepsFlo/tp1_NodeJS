@@ -1,6 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function ajoutdesc Cette commande permet d'ajouter une description à une watchList ou un film d'une watchList'
+ * @param {string} id_utilisateur Il contient le nom de la watchList
+ * @param {string} title Il contient le nom du film
+ * @param {string} content Il contient le commentaire à attribuer
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que le commentaire est bien ajouté à la watchList ou au film
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ajoutdesc')

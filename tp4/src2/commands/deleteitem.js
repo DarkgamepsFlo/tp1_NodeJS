@@ -1,6 +1,12 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function deleteitem Cette commande permet d'enlever un film d'une watchList
+ * @param {string} id_utilisateur Il contient le nom de la watchList
+ * @param {string} titre Il contient le nom du film à effacer
+ * @returns Une phrase permettant d'indiquer à l'utilisateur que le film est bien effacé de la watchList
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('deleteitem')
@@ -30,7 +36,7 @@ module.exports = {
 
         axios.request(options).then(function () {
     
-            interaction.reply("Le film : " + titre + " est bien supprimé de la watchList : " + id_utilisateur)
+            interaction.reply("Le film '" + titre + "' est bien supprimé de la watchList '" + id_utilisateur + "'")
         
         }).catch(function (error) {
             console.error(error);

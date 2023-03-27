@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function findwatchlist Cette commande permet d'afficher l'ensemble des watchLists d'un utilisateur'
+ * @param {string} name Il contient le nom de l'utilisateur
+ * @returns Une phrase permettant d'indiquer l'ensemble des watchLists de l'utilisateur
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('findwatchlist')
@@ -11,7 +16,7 @@ module.exports = {
                 .setRequired(true)),
     async execute(interaction) {
         const name = interaction.options.getString('name')
-        var result = "L'user " + name + " possède une watchList contenant : \n";
+        var result = "L'user '" + name + "' possède une watchList contenant : \n";
 
         var options = {
             method: "GET",

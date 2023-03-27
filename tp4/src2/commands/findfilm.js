@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js')
 const axios = require('axios')
 
+/**
+ * @function findfilm Cette commande permet de récupérer l'ensemble des films d'une watchList
+ * @param {string} id_utilisateur Il contient le nom de la watchList
+ * @returns Une phrase permettant d'indiquer l'ensemble du contenu d'une watchList
+ */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('findfilm')
@@ -13,7 +18,7 @@ module.exports = {
     async execute(interaction) {
         const id_utilisateur = interaction.options.getString('id_utilisateur')
 
-        var result = "Dans la watchList : " + id_utilisateur + "\n";
+        var result = "Dans la watchList '" + id_utilisateur + "' :\n";
 
         var options = {
             method: "GET",
@@ -25,7 +30,7 @@ module.exports = {
             var reponse = response.data[0]['film']
     
             reponse.forEach(element => {
-                result += "Le film : " + element[0] + " de : " + element[1] + " qui est de type : " + element[2] + " dont le status est : " + element[3] + " est présent\n"                 
+                result += "Le film '" + element[0] + "' de '" + element[1] + "' qui est de type '" + element[2] + "' dont le status est '" + element[3] + "' est présent\n"                 
             });
 
             interaction.reply(result)
