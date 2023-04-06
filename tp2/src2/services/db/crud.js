@@ -11,12 +11,16 @@ async function insertClient(collectionName, doc) {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
     if(doc.name == "" || doc.age == "")
       return ("<h1>Veuillez renseigner l'ensemble des informations nécessaire</h1><p>Pour retourner au menu prédédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
+    else if(!doc.name || !doc.age)
+      return ("<h1>Veuillez renseigner l'ensemble des informations nécessaire</h1><p>Pour retourner au menu prédédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
     else{
       // On contient dans une variable l'ensemble des éléments présents dans la table inséré en paramètre
       const collection = getCollection(collectionName);
       // On va insérer l'utilisateur dans la table puis préciser qu'il est bien inséré
       const result = await collection.insertOne(doc);
+
       console.log(`A document was inserted with the _id: ${result.insertedId}`);
+
       return ("<h1>L'utilisateur est bien enregistré dans la base de données</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
     }
   } catch(e) { // S'il y a un problème, on va préciser que l'utilisateur n'est pas inséré
@@ -51,6 +55,8 @@ async function createWatchList(collectionName, filter) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
     if(filter.name == "")
+      return ("<h1>Veuillez renseigner le nom de l'utilisateur</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
+    if(!filter.name)
       return ("<h1>Veuillez renseigner le nom de l'utilisateur</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
     else{
       // On récupère les données de la table passé en paramètre
@@ -143,8 +149,6 @@ async function insertItem(collectionName, filter, options = {}) {
       const result3 = await collection.findOne(search2, options);
       const result = await collection2.findOne(search3, options);
       const result2 = await collection3.findOne(search, options);
-
-      console.log(result2)
 
       // J'ajoute le film dans la watchlist de l'utilisateur
       const newList = result2.watchlist;
