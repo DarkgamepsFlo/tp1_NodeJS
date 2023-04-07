@@ -179,3 +179,6 @@ var option = {
           Transformer ce json en phrase ou autre
 
           !! Utiliser des docs et faire des tests (5 minimums)
+
+
+!!!!! Il faut modifier les variables main, deploy et start dans package.json pour pouvoir passer du bot discord au bot se servant de l'API

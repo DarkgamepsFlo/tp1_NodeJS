@@ -14,6 +14,7 @@ module.exports = {
         const urbanResult = await request('https://api.urbandictionary.com/v0/define?term=' + name)
         const { list } = JSON.parse(await urbanResult.body.text())
                 
+        // Essayer de lister l'ensemble des définitions
         await interaction.reply(list[0].definition)
     },
 }
