@@ -38,6 +38,10 @@ Il est présent dans le dossier tp1_NodeJS/tp4/src2
 
 Il est présent dans le dossier tp1_NodeJS/tp4/src2/out
 
+#### L'ensemble des commentaires des fonctions de l'API
+
+Il est présent dans le dossier tp1_NodeJS/tp2/src2/out
+
 #### L'ensemble des tests unitaires de l'API
 
 Il est présent dans le dossier tp1_NodeJS/tp2/src2/services/db
