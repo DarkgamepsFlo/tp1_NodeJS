@@ -3,29 +3,32 @@
 // import
 const { getCollection } = require('../../../src2/services/db/connection');
 const { searchMovies } = require('../../../src2/repositories/omdbapi');
+const {loggerwarn, loggererror, loggerinfo} = require('../../log');
 
 // 1 //
 // Cette fonction va permettre d'insérer un utilisateur dans la Base de données
 async function insertClient(collectionName, doc) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
-    if(doc.name == "" || doc.age == "")
+    if(doc.name == "" || doc.age == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertClient");
       return ("<h1>Veuillez renseigner l'ensemble des informations nécessaire</h1><p>Pour retourner au menu prédédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
-    else if(!doc.name || !doc.age)
+    } else if(!doc.name || !doc.age){
+      loggererror.log("error", "Des attributs sont manquants dans la fonction insertClient");
       return ("<h1>Veuillez renseigner l'ensemble des informations nécessaire</h1><p>Pour retourner au menu prédédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
-    else{
+    } else{
       // On contient dans une variable l'ensemble des éléments présents dans la table inséré en paramètre
       const collection = getCollection(collectionName);
       // On va insérer l'utilisateur dans la table puis préciser qu'il est bien inséré
       const result = await collection.insertOne(doc);
 
-      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+      loggerinfo.log("info", `A document was inserted with the _id: ${result.insertedId} dans la fonction insertClient`)
 
       return ("<h1>L'utilisateur est bien enregistré dans la base de données</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
     }
   } catch(e) { // S'il y a un problème, on va préciser que l'utilisateur n'est pas inséré
-	console.log(e);
-	throw "<h1>Le client n'a pas pu être inséré</h1>";
+    loggererror.log("error", `Il y a une erreur dans la fonction insertClient : ${e}`)
+	  throw "<h1>Le client n'a pas pu être inséré</h1>";
   }
 }
 
@@ -34,17 +37,17 @@ async function insertClient(collectionName, doc) {
 async function insertMovies(collectionName, doc) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
-    if(doc.s == "" || doc.apikey == "")
+    if(doc.s == "" || doc.apikey == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertMovies");
       return ("<h1>Veuillez renseigner l'ensemble des informations nécessaire</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
-    
-    else{
+    } else {
         // On fait appel à la fonction présente dans le fichier omdbapi.js pour pouvoir ajouter un film puis on précise que le film est bien ajouté
       searchMovies(collectionName, doc);
+      loggerinfo.log("info", `Le film est bien enregistré dans la fonction insertMovies`)
       return ("<h1>Le film est bien enregistré dans la base de données</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
     }
   } catch(e) { // S'il y a un problème, on va préciser que le film n'est pas inséré
-	console.log("Le film n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction insertMovies : ${e}`)
 	throw "<h1>Le film n'a pas pu être inséré</h1>";
   }
 }
@@ -54,10 +57,14 @@ async function insertMovies(collectionName, doc) {
 async function createWatchList(collectionName, filter) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
-    if(filter.name == "")
+    if(filter.name == ""){
+      loggererror.log("error", "Il manque le nom dans la fonction createWatchList");
       return ("<h1>Veuillez renseigner le nom de l'utilisateur</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
-    if(!filter.name)
+    }
+    if(!filter.name){
+      loggererror.log("error", "Il manque l'attribut name dans la fonction createWatchList");
       return ("<h1>Veuillez renseigner le nom de l'utilisateur</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/users'>Menu précédent</a></p>");
+    }
     else{
       // On récupère les données de la table passé en paramètre
       const collection = getCollection(collectionName);
@@ -79,14 +86,12 @@ async function createWatchList(collectionName, filter) {
       // On va ajouter une nouvelle watchList dans la table watchList
       insertWatchlist("watchlist", filter.name);
   
-      console.log(
-        `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
-      );
+      loggerinfo.log("info", `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s) dans la fonction createWatchList`)
+
       return ("<h1>La watchList est bien ajouté à l'utilisateur</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
     }
   } catch(e) {
-	console.log("Pas d'users updaté")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction createWatchList : ${e}`)
 	throw e;
   }
 }
@@ -106,12 +111,12 @@ async function insertWatchlist(collectionName, pseudo) {
     // create a document to insert
     const result = await collection.insertOne(element);
 
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    loggerinfo.log("info", `A document was inserted with the _id: ${result.insertedId} dans la fonction insertWatchlist`)
+
     return "La watchList est bien enregistré dans la base de données";
 
   } catch(e) {
-	console.log("La watchList n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction insertWatchlist : ${e}`)
 	throw e;
   }
 }
@@ -122,6 +127,7 @@ async function insertItem(collectionName, filter, options = {}) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
     if(filter.id_utilisateur == "" || filter.Title == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertItem");
       return ("<h1>Veuillez renseigner les informations pour pouvoir insérer un film</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
     }
     else{
@@ -177,12 +183,12 @@ async function insertItem(collectionName, filter, options = {}) {
 
       collection.updateOne(search2, updateItem, options);
 
-      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+      loggerinfo.log("info", `A document was inserted with the _id: ${result.insertedId} dans la fonction insertItem`)
+
       return ("<h1>Le film est bien inséré dans la Watchlist</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
           }
   } catch(e) {
-	console.log("L'item n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction insertItem : ${e}`)
 	throw e;
   }
 }
@@ -192,9 +198,11 @@ async function insertItem(collectionName, filter, options = {}) {
 async function updateStatus(collectionName, body) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
-    if(body.id_utilisateur == "" || body.titlefilm == "")
+    if(body.id_utilisateur == "" || body.titlefilm == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction updateStatus");
       return ("<h1>Veuillez renseigner les informations pour pouvoir changer le status du film</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
-    else{
+    }
+          else{
       // On récupère les élements de la table watchList
       const collection = getCollection(collectionName);
 
@@ -207,7 +215,7 @@ async function updateStatus(collectionName, body) {
       
       // On récupère la liste de film se trouvant dans la watList
       const result = await collection.findOne(search, options);
-      console.log(result);
+
       const film = result.film;
 
       // Pour chaque film, si le film possède le même titre que celui qu'on veut modifier.
@@ -227,11 +235,12 @@ async function updateStatus(collectionName, body) {
       // On va modifier le film dans la watchList en le remplacant par le même film avec un nouveau status
       collection.updateOne(search, updateItem, options);
 
+      loggerinfo.log("info", `Le status est bien modifié dans la fonction updateStatus`)
+
       return ("<h1>Le status est bien modifié</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>");
     }
   } catch(e) {
-	console.log("Pas d'users updaté")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction updateStatus : ${e}`)
 	throw e;
   }
 }
@@ -243,8 +252,11 @@ async function findItem(collectionName, filter) {
     const collection = getCollection(collectionName);
 
     // Si le nom est égal à "_", alors on va récupétrer l'ensemble des éléments
-    if(filter == "_")
+    if(filter == "_"){
+      loggerwarn.log("warn", "Il manque le filtre dans la fonction findItem");
       var query = { };
+    }
+      
     else  
       var query = { Title: filter };
       
@@ -261,10 +273,11 @@ async function findItem(collectionName, filter) {
       result.push(item);
     });
 
+    loggerinfo.log("info", `L'ensemble des éléments sont trouvés dans la fonction findItem`)
+
     return result;
   } catch(e) {
-    console.log("Pas d'users trouvé")
-    console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction findItem : ${e}`)
     throw e;
     }
 }
@@ -290,10 +303,11 @@ async function findUsers(collectionName) {
       result.push(item);
     });
 
+    loggerinfo.log("info", `L'ensemble des éléments sont trouvés dans la fonction findUsers`)
+
     return result;
   } catch(e) {
-    console.log("Les users n'ont pas été trouvé")
-    console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction findUsers : ${e}`)
     throw e;
     }
 }
@@ -318,10 +332,11 @@ async function findWatchList(collectionName, nom) {
       result.push(item);
     });
 
+    loggerinfo.log("info", `L'ensemble des éléments sont trouvés dans la fonction findWatchList`)
+
     return result;
   } catch(e) {
-    console.log("Les watchlist n'ont pas été trouvé")
-    console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction findWatchList : ${e}`)
     throw e;
     }
 }
@@ -345,10 +360,11 @@ async function findFilm(collectionName, nomWatchList) {
       result.push(item);
     });
 
+    loggerinfo.log("info", `L'ensemble des éléments sont trouvés dans la fonction findFilm`)
+
     return result;
   } catch(e) {
-    console.log("Les films n'ont pas été trouvé")
-    console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction findFilm : ${e}`)
     throw e;
     }
 }
@@ -357,8 +373,10 @@ async function findFilm(collectionName, nomWatchList) {
 // Cette fonction permet de supprimer un item d'une watchList
 async function deleteItem(collectionName, filter, options = {}) {
   try {
-    if(filter.id_utilisateur == "" || filter.titre == "")
+    if(filter.id_utilisateur == "" || filter.titre == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaire ne sont pas présentes dans la fonction deleteItem");
       return ("<h1>Veuillez renseigner les informations pour pouvoir supprimer un film</h1><p>Pour retourner au menu précédent : <a href='http://localhost:3000/movies'>Menu précédent</a></p>");
+    }
     else{
       // On récupère l'ensemble des éléments de chaque tables
       const collection = getCollection(collectionName);
@@ -413,12 +431,12 @@ async function deleteItem(collectionName, filter, options = {}) {
 
       collection.updateOne(search2, updateItem, options);
 
-      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+      loggerinfo.log("info", `A document was inserted with the _id: ${result.insertedId} dans la fonction deleteItem`)
+
       return "<h1>L'Item est bien supprimé de la watchList</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>"
     }
   } catch(e) {
-	console.log("L'item n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction deleteItem : ${e}`)
 	throw e;
   }
 }
@@ -436,9 +454,11 @@ async function updateUsers(collectionName, body) {
     const options = { upsert: true };
 
     // Si rien est rempli, on va demander de saisir quelque chose
-    if(body.nomNouveau == "_" && body.yearNouveau == "_") 
+    if(body.nomNouveau == "_" && body.yearNouveau == "_"){
+      loggererror.log("error", "L'ensemble des informations nécessaire ne sont pas présentes dans la fonction updateUsers");
       return "<h1>Veuillez ajouter des nouvelles informations pour pouvoir modifier</h1><p>Pour choisir des paramètre de mdifiation : <a href='http://localhost:3000/users'>Page précédente</a></p>";
-
+    }
+      
     // create a document that sets the plot of the movie
     // S'il n'y a pas d'age, on modifie que le nom
     if(body.yearNouveau == "_"){
@@ -469,14 +489,12 @@ async function updateUsers(collectionName, body) {
     }
 
     const result = await collection.updateOne(filter, updateDoc, options);
-    console.log(
-      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
-    );
+
+    loggerinfo.log("info", `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s) dans la fonction updateUsers`)
 
 	  return "<h1>Les modifications apportées à l'utilisateur ont fonctionnées</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
   } catch(e) {
-	console.log("Pas d'users updaté")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction updateUsers : ${e}`)
 	throw e;
   }
 }
@@ -494,14 +512,13 @@ async function deleteWatchlist(collectionName, item) {
     // On va supprimer celui correspondant à celui présent dans la recherche
     const result = await collection.deleteOne(query);
     if (result.deletedCount === 1) {
-      console.log("Successfully deleted one document.");
+      loggerinfo.log("info", `Le document est bien supprimé dans la fonction deleteWatchlist`)
     } else {
-      console.log("No documents matched the query. Deleted 0 documents.");
+      loggerinfo.log("info", `Aucun document correspond à la recherche dans la fonction deleteWatchlist`)
     }
     return "<h1>La watchList est bien supprimé</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
   } catch(e) {
-	console.log("La personne n'est pas effacée")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction deleteWatchlist : ${e}`)
 	throw e;
   }
 }
@@ -510,8 +527,11 @@ async function deleteWatchlist(collectionName, item) {
 // Cette fonction permet de mettre une WatchList en favori
 async function addFavori(collectionName, filter, options = {}) {
   try {
-    if(filter.id_utilisateur == "")
+    if(filter.id_utilisateur == ""){
+      loggererror.log("error", "Le nom de la watchList est manquante dans la fonction addFavori");
       return "<h1>Veuillez préciser la watchList à mettre en favori</h1><p>Pour choisir des paramètre de mdifiation : <a href='http://localhost:3000/movies'>Page précédente</a></p>";
+    }
+          
     const collection = getCollection(collectionName);
 
     const options = { upsert: false };
@@ -532,11 +552,12 @@ async function addFavori(collectionName, filter, options = {}) {
 
     collection.updateOne(search, updateDoc, options);
 
+    loggerinfo.log("info", `La watchList est bien en favorie dans la fonction addFavori`)
+
     return "<h1>La watchList est bien en favori</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
     
   } catch(e) {
-	console.log("L'item n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction addFavori : ${e}`)
 	throw e;
   }
 }
@@ -545,9 +566,11 @@ async function addFavori(collectionName, filter, options = {}) {
 // Cette fonction permet de partager une WatchList avec une autre personne
 async function partageWatchlist(collectionName, filter, options = {}) {
   try {
-    if(filter.id_utilisateur == "" || filter.name == "")
+    if(filter.id_utilisateur == "" || filter.name == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaire ne sont pas présentes dans la fonction partageWatchlist");
       return "<h1>Veuillez préciser la watchList qui va partager et l'utilisateur qui va reçevoir</h1><p>Pour choisir des paramètre de mdifiation : <a href='http://localhost:3000/movies'>Page précédente</a></p>";
-    else{
+    }
+          else{
       // On va récupérer l'ensemble des informations des users et des watchLists
       const collection = getCollection(collectionName);
       const collection2 = getCollection('users');
@@ -590,11 +613,12 @@ async function partageWatchlist(collectionName, filter, options = {}) {
       // create a document to insert
       const result = await collection.insertOne(element);
 
+      loggerinfo.log("info", `La watchList est bien partagé dans la fonction partageWatchlist`)
+
       return "<h1>Le partage est effectué</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
     }
   } catch(e) {
-	console.log("L'item n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction partageWatchlist : ${e}`)
 	throw e;
   }
 }
@@ -628,12 +652,14 @@ async function ajoutDescription(collectionName, filter, options = {}) {
     const result3 = await collection.findOne(filter.watchlist, options);
 
     if(filter.Title == "" && filter.id_utilisateur == ""){
+      loggererror.log("error", "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction ajoutDescription");
       return "<h1>Veuillez saisir les informations nécessaires</h1><p>Pour retourner au menu précédant : <a href='http://localhost:3000/movies'>Menu précédant</a></p>";
     }
     
     // S'il n'y a pas de titre, on update directement la watchList
     if(filter.Title == ""){
       collection.updateOne(searchWatch, updateDoc, options);
+      loggerinfo.log("info", `La description est bien ajouté à la watchList dans la fonction ajoutDescription`)
       return "<h1>La description est bien ajoutée à la watchList</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
     }
 
@@ -657,12 +683,13 @@ async function ajoutDescription(collectionName, filter, options = {}) {
         result = collection.updateOne(searchWatch, updateFilm, options);
       });
     }
+
+    loggerinfo.log("info", `La description est bien ajouté au Film dans la fonction ajoutDescription`)
     
     return "<h1>La description est bien ajoutée au film</h1><p>Pour retourner au menu principal : <a href='http://localhost:3000/'>Menu</a></p>";
     
   } catch(e) {
-	console.log("L'item n'a pas pu être inséré")
-	console.log(e);
+    loggererror.log("error", `Il y a une erreur dans la fonction ajoutDescription : ${e}`)
 	throw e;
   }
 }

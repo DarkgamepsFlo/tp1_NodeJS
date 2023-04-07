@@ -4,6 +4,7 @@ const { getCollection } = require('../services/db/connection');
 
 // Cette fonction va permettre de rechercher un film dans l'API de omdapi pour pouvoir l'ajouter dans la base de données
 function searchMovies(collectionName, doc){
+
   var options = {
     method: 'GET',
     url: 'http://www.omdbapi.com/',
@@ -19,6 +20,7 @@ function searchMovies(collectionName, doc){
     
     const result = collection.insertOne(response.data.Search[0]);
   }).catch(function (error) {
+
     console.error(error);
   });
 }

@@ -1,4 +1,5 @@
 const express = require("express");
+const { loggerinfo, loggerdebug, loggerwarn, loggererror} = require('../log');
 const router = express.Router();
 const {createUser, createWatchlist, findAllUsers, updateClient} = require("../controllers/users");
 
