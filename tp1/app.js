@@ -3,9 +3,9 @@ const app = express()
 const port = 3000
 
 // 8
-app.use("/", (req, res) => {
-    console.log(new Date().toJSON() + " " + req.url);
-})
+// app.use("/", (req, res) => {
+//     console.log(new Date().toJSON() + " " + req.url);
+// })
 
 // 10
 
@@ -67,7 +67,7 @@ app.get('/somme', function (req, res, next) {
     const a = Number(req.query.a)
     const b = Number(req.query.b)
     const result = a + b
-    res.send(req.params.a + " + " + req.params.b + " = " + (parseInt(req.params.a) + parseInt(req.params.b)))
+    res.send(a + " + " + b + " = " + result)
     next()
 })
 
