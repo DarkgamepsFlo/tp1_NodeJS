@@ -6,7 +6,12 @@ const { searchMovies } = require('../../../src2/repositories/omdbapi');
 const {loggerwarn, loggererror, loggerinfo} = require('../../log');
 
 // 1 //
-// Cette fonction va permettre d'insérer un utilisateur dans la Base de données
+/**
+ * Cette fonction va permettre d'insérer un client dans la base de données
+ * @param {String} collectionName Nom de la collection
+ * @param {*} doc  Représente le fichier .json contenant le nom et l'age de la personne à insérer
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function insertClient(collectionName, doc) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
@@ -33,7 +38,12 @@ async function insertClient(collectionName, doc) {
 }
 
 // 2 //
-// Cette fonction va permettre d'insérer un film dans la Base de données
+/**
+ * Cette fonction permet d'insérer un film dans la base de données
+ * @param {String} collectionName Nom de la collection
+ * @param {*} doc Représente le fichier .json contenant le nom du film
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function insertMovies(collectionName, doc) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
@@ -53,7 +63,12 @@ async function insertMovies(collectionName, doc) {
 }
 
 // 3 //
-// Cette fonction va permettre de créer une watchlist pour un utilisateur
+/**
+ * Cette fonction va permettre de créer une watchlist pour un utilisateur
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre permettant de prendre le nom de l'utilisateur
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function createWatchList(collectionName, filter) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
@@ -96,8 +111,14 @@ async function createWatchList(collectionName, filter) {
   }
 }
 
-// Cette fonction permet d'insérer une watchList dans la base de données.
-// Elle est utilisé dans createWatchList
+
+/**
+ * Cette fonction permet d'insérer une watchList dans la base de données.
+ * Elle est utilisé dans createWatchList
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} pseudo Prend le nom de l'utilisateur pour en créer une watchList
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function insertWatchlist(collectionName, pseudo) {
   try {
     // On récupère l'ensemble des éléments de la table watchlist
@@ -122,7 +143,13 @@ async function insertWatchlist(collectionName, pseudo) {
 }
 
 // 4 //
-// Cette fonction permet d'ajouter un film dans une WatchList !! Il faut que le client ainsi que l'attribut watchLlist existe au préalable
+/**
+ * Cette fonction permet d'ajouter un film dans une WatchList !! Il faut que le client ainsi que l'attribut watchLlist existe au préalable
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre qui prend le nom du Film et celui de la watchList
+ * @param {*} options il n'y a pas d'option (Fichier Json vide)
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function insertItem(collectionName, filter, options = {}) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
@@ -194,7 +221,12 @@ async function insertItem(collectionName, filter, options = {}) {
 }
 
 // 5 //
-// Cette fonction va permettre de modifier le status d'un film se trouvant dans une WatchList (Il est de base égal à "à voir")
+/**
+ * Cette fonction va permettre de modifier le status d'un film se trouvant dans une WatchList (Il est de base égal à "à voir")
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} body Représente un fichier .json qui va contenir le nom du film, le nom de la watchList et le nouveau status
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function updateStatus(collectionName, body) {
   try {
     // S'il n'y a pas d'information, on redemande à l'utilisateur de les indiquer
@@ -246,7 +278,12 @@ async function updateStatus(collectionName, body) {
 }
 
 // 6 //
-// Cette fontion va nous permettre de trouver un film dans la liste de film 
+/**
+ * Cette fontion va nous permettre de trouver un film dans la liste de film 
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre qui prend le nom du film
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function findItem(collectionName, filter) {
   try {
     const collection = getCollection(collectionName);
@@ -284,7 +321,11 @@ async function findItem(collectionName, filter) {
 
 
 // 7 //
-// Cette fonction va permettre de récupérer la liste de m'ensemble des utilisateurs
+/**
+ * Cette fonction va permettre de récupérer la liste de m'ensemble des utilisateurs
+ * @param {*} collectionName Nom de la collection 
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function findUsers(collectionName) {
   try {
 
@@ -313,7 +354,12 @@ async function findUsers(collectionName) {
 }
 
 // 8 //
-// Cette fonction va permettre d'afficher l'ensemble des watchLists d'un utilisateur
+/**
+ * Cette fonction va permettre d'afficher l'ensemble des watchLists d'un utilisateur
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} nom Prend le nom de l'utilisateur
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function findWatchList(collectionName, nom) {
   try {
 
@@ -342,7 +388,12 @@ async function findWatchList(collectionName, nom) {
 }
 
 // 9 //
-// Cette fonction permet de récupérer le contenu d'une WatchList
+/**
+ * Cette fonction permet de récupérer le contenu d'une WatchList
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} nomWatchList Prend le nom de la waychList
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function findFilm(collectionName, nomWatchList) {
   try {
     // On récupère l'ensemble des éléments dans la table watchList
@@ -370,7 +421,13 @@ async function findFilm(collectionName, nomWatchList) {
 }
 
 // 10 //
-// Cette fonction permet de supprimer un item d'une watchList
+/**
+ * Cette fonction permet de supprimer un item d'une watchList
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre qui prend le nom d'un film et d'une watchList
+ * @param {*} options Il représente un fichier .json vide
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function deleteItem(collectionName, filter, options = {}) {
   try {
     if(filter.id_utilisateur == "" || filter.titre == ""){
@@ -442,7 +499,12 @@ async function deleteItem(collectionName, filter, options = {}) {
 }
 
 // 11 //
-// Cette fonction va nous permettre de modifier les informations d'un utilisateur
+/**
+ * Cette fonction va nous permettre de modifier les informations d'un utilisateur
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} body Représente un fichier .json qui prend le nom de l'utilisateur, le nouveau nom de l'utilisateur (s'il existe) et le nouvel age de l'utilisateur (s'il existe)
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function updateUsers(collectionName, body) {
   try {
     const collection = getCollection(collectionName);
@@ -500,7 +562,12 @@ async function updateUsers(collectionName, body) {
 }
 
 // 12 //
-// Cette fonction permet de supprimer un WatchList
+/**
+ * Cette fonction permet de supprimer un WatchList
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} item Permet de prendre le nom d'une watchList
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function deleteWatchlist(collectionName, item) {
   try {
     // On récupère l'ensemble des données dans la table WatchList
@@ -524,7 +591,13 @@ async function deleteWatchlist(collectionName, item) {
 }
 
 // 13 //
-// Cette fonction permet de mettre une WatchList en favori
+/**
+ * Cette fonction permet de mettre une WatchList en favori
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre qui prend le nom de la watchList et le nom de l'utilisateur
+ * @param {*} options Fichier .json vide car il n'y a pas d'option
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function addFavori(collectionName, filter, options = {}) {
   try {
     if(filter.id_utilisateur == ""){
@@ -563,7 +636,13 @@ async function addFavori(collectionName, filter, options = {}) {
 }
 
 // 14 //
-// Cette fonction permet de partager une WatchList avec une autre personne
+/**
+ * Cette fonction permet de partager une WatchList avec une autre personne
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre qui prend le nom de la personne, de la watchlist et de la personne qui va reçevoir cette watchList
+ * @param {*} options Fichier .json vide car il n'y a pas d'option
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function partageWatchlist(collectionName, filter, options = {}) {
   try {
     if(filter.id_utilisateur == "" || filter.name == ""){
@@ -624,7 +703,13 @@ async function partageWatchlist(collectionName, filter, options = {}) {
 }
 
 // 15 //
-// Cette fonction permet d'ajouter une description à une watchList ou a un film
+/**
+ * Cette fonction permet d'ajouter une description à une watchList ou a un film
+ * @param {*} collectionName Nom de la collection 
+ * @param {*} filter Filtre qui prend le nom de la watchlist, le nom du film (si on veut mettre un commentaire) et le commentaire
+ * @param {*} options Fichier .json vide car il n'y a d'options
+ * @returns Du code HTML qui va être reconnu par pug
+ */
 async function ajoutDescription(collectionName, filter, options = {}) {
   try {
 
