@@ -1,0 +1,50 @@
+{
+  level: 'error',
+  message: "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertClient",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: 'Des attributs sont manquants dans la fonction insertClient',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertClient",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "Il manque l'attribut name dans la fonction createWatchList",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "Il manque l'attribut name dans la fonction createWatchList",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertItem",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction insertItem",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction updateStatus",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: "L'ensemble des informations nécessaires ne sont pas présentes dans la fonction updateStatus",
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'error',
+  message: 'Le nom de la watchList est manquante dans la fonction addFavori',
+  timestamp: 'Apr-07-2023 14:25:39'
+}

@@ -1,0 +1,30 @@
+{
+  level: 'info',
+  message: 'A document was inserted with the _id: 64300bc3ec44d29488b90ed9 dans la fonction insertClient',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'info',
+  message: '1 document(s) matched the filter, updated 1 document(s) dans la fonction createWatchList',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'info',
+  message: 'A document was inserted with the _id: 64300bc3ec44d29488b90eda dans la fonction insertWatchlist',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'info',
+  message: 'A document was inserted with the _id: undefined dans la fonction insertItem',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'info',
+  message: 'Le status est bien modifié dans la fonction updateStatus',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
+{
+  level: 'info',
+  message: 'La watchList est bien en favorie dans la fonction addFavori',
+  timestamp: 'Apr-07-2023 14:25:39'
+}
